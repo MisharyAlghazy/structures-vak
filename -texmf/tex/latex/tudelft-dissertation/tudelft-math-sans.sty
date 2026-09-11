@@ -1,0 +1,59 @@
+\PassOptionsToPackage{warnings-off={mathtools-colon,mathtools-overbracket}}{unicode-math}
+
+\usepackage[
+  mathrm=sym,
+  mathbf=sym,
+]{unicode-math}
+\setmathfont{Fira Math}
+%\usepackage{firamath-otf}
+
+% upright integrals
+% https://github.com/firamath/firamath/issues/49
+% https://mirror.lyrahosting.com/CTAN/fonts/firamath/firamath-specimen.pdf \S 28.9
+\setmathfont[range={"222B-"2233,"2A0B-"2A1C},StylisticSet=1]{Fira Math}
+\NewDocumentCommand{\uppartial}{}{\symup{\partial}}
+
+\setmathfont[
+  range={frak,bffrak,cal,bfcal},
+]{XITS Math}
+% alternatively: GFS Neohellenic Math
+% or pic some free font you like; I saw some interesting ones here:
+% - https://www.1001fonts.com/users/steffmann/
+% - https://www.1001fonts.com/users/squaregear/
+
+% only included in TexLive 2025, so not yet on Overleaf
+% \usepackage[Scale=0.98]{lete-sans-math}
+
+%\setmathfont[
+%  Path=Roboto/,
+%  Extension=.ttf,
+%  range=up/{greek,Greek,latin,Latin},
+%]{Roboto-VF.ttf}
+%
+%\setmathfont[
+%  Path=Roboto/,
+%  range=it/{greek,Greek,latin,Latin},
+%]{Roboto-VF-Italic.ttf}
+%
+%\setmathfont[
+%  Path=Roboto/,
+%  range=bfup/{greek,Greek,latin,Latin},
+%  Instance=Bold,
+%]{Roboto-VF.ttf}
+%
+%\setmathfont[
+%  Path=Roboto/,
+%  range=bfit/{greek,Greek,latin,Latin},
+%  Instance=Bold,
+%]{Roboto-VF-Italic.ttf}
+
+%\setmathfont{Fira Math}
+
+\RequirePackage{siunitx}
+\RequirePackage{upgreek}
+
+\DeclareSIPrefix{\micro}{\ensuremath{\upmu}}{-6}
+\DeclareSIUnit{\ohm}{\ensuremath{\Omega}}
+
+% since the fonts in math and text are similar, this will probably look best in most cases
+\sisetup{detect-all,mode=text}

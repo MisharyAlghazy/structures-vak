@@ -1,0 +1,37 @@
+% https://tex.stackexchange.com/questions/693103/understanding-removefromhook-with-label
+% https://www.latex-project.org/help/documentation/ltshipout-doc.pdf
+% https://texdoc.org/serve/geometry/0
+
+% temporarily change the page layout for a single page, and restore it afterwards
+% can be used to create a fold-out page, for example.
+
+\usepackage{typearea}
+\usepackage{geometry}
+\usepackage{scrlayer-scrpage}
+
+\newlength{\oldevensidemargin}
+\newlength{\oldoddsidemargin}
+\newlength{\oldpaperwidth}
+\newlength{\oldtextwidth}
+\newlength{\newtextwidth}
+
+\newenvironment{temppage}[1]{
+	\storeareas\MySavedValues
+	\setlength{\oldevensidemargin}{\evensidemargin}
+	\setlength{\oldoddsidemargin}{\oddsidemargin}
+	\setlength{\oldpaperwidth}{\paperwidth}
+	\setlength{\oldtextwidth}{\textwidth}
+
+	\KOMAoptions{#1}
+	\recalctypearea
+	\setlength{\newtextwidth}{\oldtextwidth}
+	\addtolength{\newtextwidth}{\oldpaperwidth}
+	\newgeometry{textwidth=\newtextwidth}
+	\setlength{\evensidemargin}{\oldevensidemargin}
+	\setlength{\oddsidemargin}{\oldoddsidemargin}
+	\newpage
+}{
+	\restoregeometry
+	\MySavedValues
+	\recalctypearea
+}

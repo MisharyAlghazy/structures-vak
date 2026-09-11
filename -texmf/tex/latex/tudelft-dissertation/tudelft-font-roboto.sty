@@ -1,0 +1,75 @@
+\ifluatex
+  \usepackage{fontspec}
+
+  % https://tex.stackexchange.com/questions/762018/why-does-robotoslab-fontseries-selectfont-not-work-in-lualatex
+  \newfontfamily{\roboto}{Roboto}[
+    Extension=.otf,
+    UprightFont=*-Regular,
+    ItalicFont=*-Italic,
+    BoldFont=*-Bold,
+    BoldItalic=*BoldItalic,
+    FontFace={sb}{n}{*-Medium},
+    FontFace={sb}{it}{*-MediumItalic},
+    FontFace={eb}{n}{*-Black},
+    FontFace={eb}{it}{*-BlackItalic},
+    FontFace={l}{n}{*-Light},
+    FontFace={l}{it}{*-LightItalic},
+    FontFace={el}{n}{*-Thin},
+    FontFace={el}{it}{*-ThinItalic},
+  ]
+  \newfontfamily{\robotoslab}{RobotoSlab}[
+    Extension=.otf,
+    UprightFont=*-Regular,
+    BoldFont=*-Bold,
+    FontFace={l}{n}{*-Light},
+    FontFace={el}{n}{*-Thin},
+  ]
+
+  \RequirePackage{tudelft-math-sans}
+
+  \setromanfont{RobotoSerif}
+  \usepackage{tudelft-patch-varGreek-unicode}
+
+%  \newcommand{\mediumseries}{\addfontfeatures{RawAxis={weight=\@roboto@weight@medium@val}}}
+  \newcommand{\thinseries}{\fontseries{el}\selectfont}
+  \newcommand{\lightseries}{\fontseries{l}\selectfont}
+%  \newcommand{\blackseries}{\addfontfeatures{RawAxis={weight=\@roboto@weight@black@val}}}
+%  \renewcommand{\robotoslab}{\robotoslabvf}
+\else
+  \usepackage{roboto}
+  % https://tex.stackexchange.com/questions/393711/can-the-arev-package-provide-boldsymbol-math
+  \usepackage{arevmath}
+  \SetSymbolFont{symbols}{bold}{OMS}{zavm}{m}{n}
+  \usepackage{tudelft-patch-Greek-roboto}
+
+  % abbreviations from roboto.sty
+  \newcommand{\mediumseries}{\fontseries{sb}\selectfont}
+  \newcommand{\thinseries}{\fontseries{el}\selectfont}
+  \newcommand{\lightseries}{\fontseries{l}\selectfont}
+  \newcommand{\blackseries}{\fontseries{eb}\selectfont}
+\fi
+
+\ifluatex
+  \setmonofont[Scale=1.15]{CMU Typewriter Text}
+\else
+  % I like this font slightly less, but the other one requires lualatex.
+  \usepackage[scale=1.2]{nimbusmono}
+\fi
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% add a font for bold sans-serif italics in math
+\ifx\mathbfsf\undefined
+  \DeclareMathAlphabet{\mathbfsf}{\encodingdefault}{\sfdefault}{bx}{it}
+  \DeclareMathAlphabet{\mathbfrm}{\encodingdefault}{\sfdefault}{bx}{rm}
+\fi
+
+\ifluatex
+  \DeclareDocumentCommand{\boldsymbol}{m}{\symbfit{#1}}
+  \DeclareDocumentCommand{\uphbar}{}{\textnormal{\hwithstroke}}
+\else
+  \usepackage{bm}
+  \DeclareDocumentCommand{\boldsymbol}{m}{\bm{#1}}
+  \DeclareDocumentCommand{\hwithstroke}{}{\rlap{\rule[1.12ex]{.65ex}{.13ex}}h}
+  \DeclareDocumentCommand{\uphbar}{}{\textnormal{\hwithstroke}}
+\fi

@@ -1,0 +1,69 @@
+\documentclass[
+  % fourier,
+  % print,
+]{tudelft-report}[2026/06/01]
+
+% UK English is the default language; Dutch for designated parts
+\ifluatex
+  \RequirePackage{polyglossia}
+  \setdefaultlanguage[variant=british]{english}
+  \setotherlanguage{dutch}
+  % define babel syntax when using polyglossia, so we can use either package
+\else
+  % american is needed for \blindtext and \blinddocument
+  \RequirePackage[dutch,american,british]{babel}
+  % \NewDocumentEnvironment{dutch}{\begin{foreignlanguage}{dutch}}{\end{foreignlanguage}}
+\fi
+\RequirePackage{csquotes}
+
+\usepackage[
+  % style=apa,
+]{biblatex}
+\addbibresource{report.bib}
+
+\usepackage{changes}
+\usepackage[math]{blindtext} % filler text
+
+% Hyperlinks are blue, except in print mode, when they are all black.
+\usepackage[
+  colorlinks=true,
+  citecolor=accent,
+  linkcolor=accent,
+  urlcolor=accent,
+]{hyperref}
+
+
+\begin{document}
+
+% metadata such as author, title, etc. are defined in cover.tex
+\include{cover}
+
+% Use Roman numerals for the page numbers of the title pages and table of
+% contents.
+\frontmatter
+
+% Include an optional title page.
+\include{title}
+
+\include{preface}
+
+\tableofcontents
+
+% Use Arabic numerals for the page numbers of the chapters.
+\mainmatter%
+
+\include{introduction}
+
+% Use letters for the chapter numbers of the appendices.
+\appendix
+
+\include{lorem-ipsum}
+
+% Chapters without numbers in the back
+\backmatter%
+\printbibliography[heading=bibintoc]
+
+\MakeCoverBack%
+
+\end{document}
+

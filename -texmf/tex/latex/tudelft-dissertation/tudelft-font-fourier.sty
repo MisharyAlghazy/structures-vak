@@ -1,0 +1,19 @@
+\ifluatex{}
+  \PassOptionsToPackage{warnings-off={mathtools-colon,mathtools-overbracket}}{unicode-math}
+  \RequirePackage{fourier-otf}
+\else
+  \RequirePackage{siunitx}
+  \RequirePackage{fourier}
+  % upright partial derivative, because it is an operator, not a variable
+  \DeclareMathSymbol{\uppartial}{\mathord}{otherletters}{130}
+  \let\partial\uppartial
+  \RequirePackage[Symbolsmallscale]{upgreek}
+  \DeclareSIPrefix{\micro}{\ensuremath{\upmu}}{-6}
+\fi
+
+\RequirePackage[varqu,varl]{inconsolata} % typewriter
+
+% add a font for bold sans-serif italics in math
+\ifx\mathbfsf\undefined{}
+  \DeclareMathAlphabet{\mathbfsf}{\encodingdefault}{\sfdefault}{bx}{sl}
+\fi

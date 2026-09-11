@@ -1,0 +1,33 @@
+\RequirePackage{tikz}
+\RequirePackage{tudelft-color}
+
+\NewDocumentCommand\tudlogo{so}{%
+  \begin{tikzpicture}[even odd rule, x=1ex, y=1ex, baseline=0.09509ex]
+    \IfBooleanTF{#1}{% starred version misses the small name in full
+      \clip[use as bounding box] (0, 0) rectangle (7.14918, 2.85347);
+    }{
+      \path[use as bounding box] (0, 0) rectangle (10.21557, 2.85347);
+    }
+    \IfNoValueTF{#2}{
+      \begin{scope}
+        \clip (1.3, 0) rectangle (2.8, 1.5)% U
+          (0, 0) rectangle (10.21557, 2.85347);
+        \includegraphics[width=10.21557ex, height=2.85347ex]{tudelft-logo.pdf}
+      \end{scope}
+      \begin{scope}[fill=tud Blue]
+        \clip (1.3, 0) rectangle (2.8, 1.5);% U
+        \includegraphics[width=10.21557ex, height=2.85347ex]{tudelft-logo.pdf}
+      \end{scope}
+    }{
+      \begin{scope}[fill=#2]
+        \includegraphics[width=10.21557ex, height=2.85347ex]{tudelft-logo.pdf}
+      \end{scope}
+    }
+  \end{tikzpicture}
+}
+
+\NewDocumentCommand{\tudflame}{O{}}{%
+  \begin{tikzpicture}[x=1ex, y=1ex, baseline=1.55971ex, #1]
+    \clip (0.37186, 1.55971) rectangle ++(1.30406, 1.29376);
+    \includegraphics[width=10.21557ex, height=2.85347ex]{tudelft-logo.pdf}
+  \end{tikzpicture}}

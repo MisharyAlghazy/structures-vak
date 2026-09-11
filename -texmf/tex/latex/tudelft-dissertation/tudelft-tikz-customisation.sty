@@ -1,0 +1,154 @@
+% http://tex.stackexchange.com/questions/78689/change-style-of-labels-of-tikz-nodes-of-a-given-style
+% https://en.wikipedia.org/wiki/Flowchart
+% http://tex.stackexchange.com/questions/48397/tikz-right-angle-edges-between-nodes
+% http://tex.stackexchange.com/questions/29808/can-i-control-the-density-of-a-pattern-in-tikz
+
+\usetikzlibrary{
+  arrows,
+  backgrounds,
+  calc,
+  % chains,
+  decorations.markings,
+  decorations.pathmorphing,
+  % decorations.pathreplacing,
+  % decorations.shapes,
+  % decorations.text,
+  fit,
+  % knots,
+  matrix, % matrix of nodes
+  patterns,
+  % placements,
+  % positioning, % "of"
+  % scopes,
+  shadows,
+  shapes.geometric,
+  shapes.misc,
+  % shapes.symbols,
+  % through,
+}
+
+\pgfdeclarepatternformonly[\hatchsep]{hatch}{\pgfqpoint{0pt}{0pt}}{\pgfqpoint{\hatchsep}{\hatchsep}}{\pgfqpoint{\hatchsep}{\hatchsep}}%
+{
+  \pgfsetlinewidth{.5pt}
+  \pgfpathmoveto{\pgfqpoint{-.5\hatchsep}{0pt}}
+  \pgfpathlineto{\pgfqpoint{ .5\hatchsep}{\hatchsep}}
+  \pgfpathmoveto{\pgfqpoint{ .5\hatchsep}{0pt}}
+  \pgfpathlineto{\pgfqpoint{1.5\hatchsep}{\hatchsep}}
+  \pgfusepath{stroke}
+}
+
+\pgfdeclarepatternformonly[\hatchsep]{hctah}{\pgfqpoint{0pt}{0pt}}{\pgfqpoint{\hatchsep}{\hatchsep}}{\pgfqpoint{\hatchsep}{\hatchsep}}%
+{
+  \pgfsetlinewidth{.5pt}
+  \pgfpathmoveto{\pgfqpoint{-.5\hatchsep}{\hatchsep}}
+  \pgfpathlineto{\pgfqpoint{ .5\hatchsep}{0pt}}
+  \pgfpathmoveto{\pgfqpoint{ .5\hatchsep}{\hatchsep}}
+  \pgfpathlineto{\pgfqpoint{1.5\hatchsep}{0pt}}
+  \pgfusepath{stroke}
+}
+
+\newdimen\hatchsep
+\tikzset{
+  hatchsep/.code={\hatchsep=#1},
+  hatchsep=3pt
+}
+
+% \tikzstyle{reddashed}[red]=[draw=#1, dashed, ultra thick, rounded corners]
+
+% \tikzstyle{opaque}[white]=[fill=#1, fill opacity=.7, text opacity = 1]
+
+% http://www.breezetree.com/article-excel-flowchart-shapes.htm
+
+\tikzset{
+  every edge/.append style = {
+    thick,
+     ->,
+  },
+  bold/.style = {
+    ultra thick,
+    font = \bfseries,
+  },
+  flowBlock/.style = {
+    thick, draw,
+    fill=blue!10,
+    minimum width=2.5cm,
+    minimum height=1cm,
+    outer sep=1ex,
+    inner sep=1ex,
+    align=center,
+  },
+  -|/.style = {
+    rounded corners=5pt,
+    to path={-| (\tikztotarget)},
+  },
+  |-/.style = {
+    rounded corners=5pt,
+    to path={|- (\tikztotarget)},
+  },
+  flowTerminal/.style = {
+    flowBlock,
+    rounded rectangle,
+  },
+  flowProcess/.style = {
+    flowBlock,
+    rectangle,
+  },
+  flowDecision/.style = {
+    flowBlock,
+    diamond,
+    aspect=#1,
+  },
+  flowDecision/.default = 2,
+  flowData/.style = {
+    flowBlock,
+    trapezium,
+    trapezium stretches body,
+    trapezium left angle=#1,
+    trapezium right angle=-#1,
+    inner xsep=0ex,
+    outer xsep=0ex,
+  },
+  flowData/.default = 80,
+  flowConnector/.style = {
+    flowBlock,
+    circle,
+    minimum size=5mm,
+  },
+  shine/.style = {
+    flowBlock,
+    bold,
+    fill = #1!5,
+    draw = #1!50,
+    dashed,
+    rounded corners,
+    inner sep=2ex,
+    % drop shadow = {fill=black, opacity=.1}
+  },
+  shine/.default = red,
+}
+
+% S's and T's to interrupted lines
+\newcommand{\horzS}{++(3mm,0) .. controls ++(-3mm,-2mm) and ++(3mm,2mm) .. ++(-6mm,0mm) ++(3mm,0mm)}
+\newcommand{\vertS}{++(0,-3mm) .. controls ++(-2mm,3mm) and ++(2mm,-3mm) .. ++(0mm,6mm) ++(0mm,-3mm)}
+\newcommand{\teeline}[1]{++(#1) -- ++($-2*(#1)$) ++(#1)}
+
+% http://tex.stackexchange.com/questions/48734/how-to-produce-a-tight-box-with-a-fancy-border
+% Caution-tape frame style
+% Could be better: read p450 onward.
+\tikzstyle{caution}=[decorate, decoration=
+  {markings, mark=between positions 0 and 1 step 6pt with {
+    \fill[sharp corners, black] (-4pt,0pt) -- (-3pt,-2pt) -- (0pt,2pt) -- (-3pt,2pt) -- cycle; 
+          \fill[sharp corners, yellow] (-3pt,-2pt) -- (0pt,-2pt) -- (3pt,2pt) -- (0pt,2pt) -- cycle;
+          \fill[sharp corners, black] (0pt,-2pt) -- (3pt,-2pt) -- (4pt,0pt) -- (3pt,2pt) -- cycle;
+}}]
+
+\tikzset{
+  % courtesy of Alenanno ref:
+  % http://tex.stackexchange.com/questions/287967/drawing-thin-line-around-a-multipart-tikz-shape#comment696552_287972
+  addNodeName/.style = {
+     append after command = {
+      \pgfextra{\node [above right, red] at (\tikzlastnode.north east) {\tt\tikzlastnode};}
+    },
+  }
+}
+

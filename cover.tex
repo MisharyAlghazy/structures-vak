@@ -1,0 +1,167 @@
+% arara: pdflatex
+% we will use commands containing `@' in the name:
+\makeatletter
+\newif\if@onlycoverfront
+\ifx\@onlypreamble\@notprerr
+  % latex already read a \begin{document}
+  % so now our job is to output just the of the front cover
+  % as part of the full report
+  \@onlycoverfronttrue
+\else
+  % latex did not read a \begin{document}
+  % so now our job is to output the full cover
+  \@onlycoverfrontfalse
+  \documentclass{tudelft-report}[2026/06/01]
+  \begin{document}
+\fi
+
+% this file can either be compiled on its own, or as part of the main document
+% as part of the main document, it is only supposed to create a front cover
+% and (re)define a command \MakeCoverBack to add the back cover to the document.
+
+% document metadata
+\title{Report Title}
+\subtitle{Optional Subtitle}
+\author{J. Random Author}
+\newcommand{\isbn}{978-90-8593-000-0}
+
+% set lengths used for the cover
+\setcoverbleed{1.5mm}
+\newlength{\covermargin}
+\setlength{\covermargin}{30mm}
+
+\let\oldoddsidemargin\oddsidemargin
+\usetikzlibrary{fadings,patterns}
+
+% everything is pretty free format, since it would probably be impossible to
+% create a cover template that will make everyone happy
+
+
+\begin{tikzfadingfrompicture}[name=myfading radial]
+\draw[inner color=transparent!40, outer color=transparent!100] (0,0) rectangle (2,2);
+\end{tikzfadingfrompicture}
+
+\renewcommand{\CoverFront}{%
+  \begin{tikzpicture}[overlay, inner sep=0pt]
+    \node[anchor=south west] at (-\coverspinewidth, -\coverbleed)
+      {\pgfimage[width=\dimexpr(\oldpaperwidth+\coverspinewidth+2\coverbleed)\relax]{tank-below.jpg}};
+    \node[anchor=north west]% define upper left corner
+      at (30mm, \oldpaperheight-30mm)
+      {{\begin{minipage}%
+          [t]% vertical alignment of minipage w.r.t. surroundings; irrelevant since it is in a tikz node here
+          [90mm]% height of minipage
+          [b]% vertical alignment of text within minipage
+          {\dimexpr(\oldpaperwidth-60mm)\relax}% width of minipage
+        \KOMAoptions{parskip=half}
+        \raggedright
+        \color{white}
+        % hard-coded formatting, since it's hard to predict what is sensible
+        {\headingfont
+          {\fontsize{60pt}{60pt}\selectfont\@title\\[20pt]}
+          \ifx\@subtitle\@empty\else
+            {\fontsize{30pt}{30pt}\selectfont\@subtitle\\[30pt]}
+          \fi
+        }
+        \color{black}
+        \Huge J.\ Random Author
+        \vfill
+        \large
+        \textbf{Cover text}\\[1ex]
+        Possibly spanning multiple lines
+
+        \isbn
+      \end{minipage}}
+    };
+    % darken background slightly so logo is more visible
+    \fill[black, path fading=myfading radial] (0cm,0cm) rectangle (17cm,7cm);
+    \node[anchor=south west, scale=4] at (\covermargin, \covermargin) {\tudlogo[white]};    
+  \end{tikzpicture}
+}
+
+% has to be inserted manually in the main document
+\renewcommand{\CoverBack}{%
+  \tikz[overlay]{
+    \node[
+      anchor=south west,
+      scale=4,
+    ] at (\covermargin, \covermargin)
+    {\tudlogo[white]};
+  }
+}
+
+\MakeCoverFront%
+
+\if@onlycoverfront
+  \endinput
+\fi
+
+% define what has to be printed on the spine, which will be placed between the
+% front and back cover in the output of \MakeCoverFull
+\renewcommand{\CoverSpine}{%
+  \tikz[overlay]{%
+    \node[
+      anchor=west,
+      rotate=90,
+      minimum height=\coverspinewidth,
+      fill=black,
+      text=white,
+    ]
+    at (0.5\coverspinewidth, 0.7\paperheight)
+    {\quad\@title \hspace*{\paperheight}};
+  }
+}
+
+\MakeCoverFull%
+
+\renewcommand{\CoverFront}{%
+  \begin{tikzpicture}[overlay, inner sep=0pt]
+    % background image
+    \node[anchor=south west] (bg) at (-\coverspinewidth, -2cm)
+      {\pgfimage[width=\dimexpr(\oldpaperwidth+\coverspinewidth+2\coverbleed)\relax]{tank-overview.jpg}};
+    % darken the top so that the text is more visible
+    \tikzfading[name=fade down, top color=transparent!50, bottom color=transparent!100]
+    \fill[black, path fading=fade down] (bg.north west) rectangle (bg.east);
+    % text area
+    \node[anchor=south west]% define lower left corner
+      at (30mm, 20mm)
+      {{\begin{minipage}%
+          [t]% vertical alignment of minipage w.r.t. surroundings; irrelevant since it is in a tikz node here
+          [\dimexpr(\oldpaperheight-50mm)\relax]% height of minipage
+          [b]% vertical alignment of text within minipage
+          {\dimexpr(\oldpaperwidth-60mm)\relax}% width of minipage
+        \KOMAoptions{parskip=half}
+        \raggedright
+        \color{white}
+        % free format / hard-coded formatting, since it's hard to predict what is sensible
+        {\headingfont
+          {\fontsize{60pt}{60pt}\selectfont\@title\\[20pt]}
+          \ifx\@subtitle\@empty\else
+            {\fontsize{30pt}{30pt}\selectfont\@subtitle\\[30pt]}
+          \fi
+        }
+        \Huge J.\ Random Author
+        \vfill
+        \large
+        \textbf{Cover text}\\[1ex]
+        Possibly\\spanning multiple lines
+
+        \isbn
+        
+        \bigskip
+
+        % logo with asterisk hides "Delft University of Technology", which would not look nice on this specific background
+        \scalebox{3}{\tudlogo*[white]}
+        \end{minipage}}
+    };
+  \end{tikzpicture}
+}
+
+\makeatother
+
+\MakeCoverFront%
+
+\MakeCoverFull%
+
+\MakeCoverBack%
+
+\end{document}

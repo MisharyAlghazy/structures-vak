@@ -1,0 +1,112 @@
+%arara: pdflatex
+
+\RequirePackage{xcolor}
+\RequirePackage{tudelft-color}
+\RequirePackage{tudelft-foldout-page}
+% left, bottom, right, top
+
+\let\mainpaperwidth\paperwidth
+\let\mainpaperheight\paperheight
+
+\colorlet{covercolor}{tud Blue}
+\newlength{\coverbleed}
+\newlength{\coverspinewidth}
+\newlength{\coverpaperwidth}
+\newlength{\coverpaperheight}
+
+\newlength{\oldtopmargin}
+\newlength{\oldpaperheight}
+
+% left margin of left pages
+\setlength{\oldevensidemargin}{\evensidemargin}
+% left margin of right pages
+\setlength{\oldoddsidemargin}{\oddsidemargin}
+\setlength{\oldtopmargin}{\topmargin}
+\setlength{\oldpaperwidth}{\paperwidth}
+\setlength{\oldpaperheight}{\paperheight}
+\setlength{\oldtextwidth}{\textwidth}
+
+\newcommand{\setcoverbleed}[1]{
+  \setlength{\coverbleed}{#1}
+  \setlength{\coverpaperwidth}{\dimeval{2\mainpaperwidth+2\coverbleed+\coverspinewidth}}
+  \setlength{\coverpaperheight}{\dimeval{\mainpaperheight+2\coverbleed}}
+}
+\newcommand{\setcoverspinewidth}[1]{
+  \setlength{\coverspinewidth}{#1}
+  \setlength{\coverpaperwidth}{\dimeval{2\mainpaperwidth+2\coverbleed+\coverspinewidth}}
+  \setlength{\coverpaperheight}{\dimeval{\mainpaperheight+2\coverbleed}}
+}
+
+\setcoverbleed{1.5mm}
+\setcoverspinewidth{10mm}
+
+\newcommand{\CoverFront}{\color{red}\rule{\paperwidth}{\paperheight}}
+\newcommand{\CoverSpine}{\color{green}\rule{\coverspinewidth}{\paperheight}}
+\newcommand{\CoverBack}{\color{blue}\rule{\paperwidth}{\paperheight}}
+\newcommand{\CoverFrontText}{\null}
+\newcommand{\CoverBackText}{\null}
+
+\newcommand{\MakeCoverFront}{%
+  \clearpage
+  \pagecolor{covercolor}
+  \thispagestyle{empty}
+  \AddToHookNext{shipout/background}{
+    \put(0, -\paperheight){\CoverFront}
+  }
+  \CoverFrontText%
+  \newpage%
+  \pagecolor{white}
+}
+  
+\newcommand{\MakeCoverBack}{
+  \clearpage
+  \pagecolor{covercolor}
+  \thispagestyle{empty}
+  \AddToHookNext{shipout/background}{
+    \put(0, -\paperheight){\CoverBack}
+  }
+  \CoverBackText%
+  \newpage%
+  \pagecolor{white}
+}
+    
+\newcommand{\MakeCoverFull}{
+  \begin{temppage}{
+    paper=\coverpaperwidth:\coverpaperheight,
+    paper=landscape
+  }
+    \pagecolor{covercolor}
+    \thispagestyle{empty}
+    \AddToHookNext{shipout/background}{
+      \put(\coverbleed, -\paperheight-\coverbleed){\CoverBack}
+      \put(\paperwidth+\coverbleed+\coverspinewidth, -\paperheight-\coverbleed){\CoverFront}
+      \put(\paperwidth+\coverbleed, -\paperheight-\coverbleed){\CoverSpine}
+    }
+    \CoverBackText%
+    \CoverFrontText%
+  \end{temppage}
+  \pagecolor{white}
+}
+
+
+% two pages combined as one in pdf:
+\NewDocumentEnvironment{fullcoverpage}{O{0pt}O{0pt}}{%
+	\newpage%
+ 	\storeareas\myKOMAarea%
+	\KOMAoptions{#1}
+	\recalctypearea%
+	\setlength{\newtextwidth}{\oldtextwidth}
+	\addtolength{\newtextwidth}{\oldpaperwidth}
+	\addtolength{\newtextwidth}{-\oldevensidemargin}
+	\addtolength{\newtextwidth}{\oldoddsidemargin}
+	\newgeometry{textwidth=\newtextwidth}
+	\setlength{\evensidemargin}{\oldevensidemargin}
+%	\setlength{\oddsidemargin}{\oldoddsidemargin}
+%	\twocolumn%
+  \newpage%
+}{%
+  \restoregeometry%
+  \myKOMAarea%
+  \recalctypearea%
+  \newpage%
+}
