@@ -24,6 +24,9 @@
 \usepackage{changes}
 \usepackage[math]{blindtext} % filler text
 
+\usepackage{enumitem} % for a., b., c. and i., ii., iii. sub-lists in the assignment questions
+\usepackage{booktabs} % for the torsion/warping constants table in Assignment 5
+
 % Hyperlinks are blue, except in print mode, when they are all black.
 \usepackage[
   colorlinks=true,
@@ -54,10 +57,21 @@
 
 \include{introduction}
 
+\part{Part 1}
+\include{assignment1}
+\include{assignment2}
+\include{assignment3}
+
+\part{Part 2}
+\include{assignment4}
+\include{assignment5}
+\include{assignment6}
+\include{assignment7}
+
 % Use letters for the chapter numbers of the appendices.
 \appendix
 
-\include{lorem-ipsum}
+\include{appendix}
 
 % Chapters without numbers in the back
 \backmatter%

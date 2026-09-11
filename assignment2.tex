@@ -1,0 +1,72 @@
+\chapter{Open Sections B}
+\label{ch:assignment2}
+
+\begingroup\itshape Assignment 2 --- 20 points\endgroup
+
+\bigskip
+For section~B two configurations are at hand (designs B1 and B2). This section is the parallel midship of the vessel and has tanks in the side shells and a double bottom. $M_t$ is applied counter clockwise through CT. Provided are two designs: (global) basic design B1 with characteristic dimensions $a$ and $t_p$ (Figure~5 of the assignment brief), and design B2, which includes an additional stringer and side girder (Figure~6). The amount of material is the same for both designs. Both designs are symmetrical, and the thickness of the centre girder is given for half a section, i.e., the actual centre girder has double the depicted thickness.
+
+\section{Shear flow sketch for design B2}
+
+Sketch the shear flow (using arrows) for design B2. \textbf{(1 pt)}
+
+\bigskip
+\textit{Answer.}
+
+\section{Shear flow per cell for design B2}
+
+Calculate the shear flow per cell for design B2. Present all partial answers. \textbf{(2 pts)}
+
+\bigskip
+\textit{Answer.}
+
+\section{Maximum shear stress for design B2}
+
+Locate the position of maximum shear stress and its magnitude for design B2. \textbf{(2 pts)}
+
+\bigskip
+\textit{Answer.}
+
+\section{Torsional stiffness and strength}
+
+\begin{enumerate}[label=\alph*.]
+  \item Explain the difference between strength and stiffness. \textbf{(1 pt)}
+
+  \textit{Answer.}
+
+  \item Analytically calculate the torsional stiffness $I_{p,B2}(a,t_p)$ for design B2 and compare this with the value $I_{p,B1}(a,t_p) \approx 108.70\,a^3 t_p$ of design B1. Discuss the origin of possible differences. \textbf{(2 pts)}
+
+  \textit{Answer.}
+
+  \item Calculate the strength $M_{t,B2}(a,t_p,\tau_{max})$ for design B2 and compare this with the value $M_{t,B1}(a,t_p,\tau_{max}) \approx 75.50\,a^2 t_p \tau_{max}$ of design B1. Discuss the origin of possible differences. \textbf{(2 pts)}
+
+  \textit{Answer.}
+\end{enumerate}
+
+\bigskip
+For Questions~\ref{ch:assignment2}.5--\ref{ch:assignment2}.7, neglect longitudinal girders and stringer decks and consider a U-shaped structure with breadth $A$, depth $B$, bottom thickness $t_{bp}$, and side-shell thickness $t_{sp}$ (design BU).
+
+\section{Sectorial coordinate and sectorial area moment}
+
+Calculate and plot, for this U-shaped structure, the sectorial coordinate distribution $\omega(s)$ as well as the sectorial area moment $S_\omega(s)$ for design BU, in order to show the cross-sectional warping displacement and shear stress distribution. Sketch the distributions in the U-shaped section. \textbf{(3 pts)}
+
+\bigskip
+\textit{Answer.}
+
+\section{Torsion and warping constants of design BU}
+
+Calculate the torsion constant $I_p(A,B,t_{bp},t_{sp})$ and warping constant $I_w(A,B,t_{bp},t_{sp})$ for the simplified model of section BU. Present $I_w(a,t_p)$ using $A = 8a$, $B = 5a$, $t_{sp} = 3.5\,t_p$, and $t_{bp} = 6.5\,t_p$.
+\begin{quote}
+\emph{Hint: In Maple, use} \texttt{simplify(eval(Iw, [A = 8*a, B = 5*a, t[sp] = 3.5*t[p], t[bp] = 6.5*t[p]]))}.
+\end{quote}
+\textbf{(3 pts)}
+
+\bigskip
+\textit{Answer.}
+
+\section{Effect of closing the hatch cover}
+
+For the simple geometry, consider the hatch cover both open (BU) and closed (BUH). What is the improvement in $I_p(a,t_p)$ when closing the hatch cover? The thickness of the hatch cover is $t_{hp} = 2.5\,t_p$. Assume Bredt's thin-walled theory for the calculation of the $I_p$ of the section with a closed hatch cover. \textbf{(4 pts)}
+
+\bigskip
+\textit{Answer.}

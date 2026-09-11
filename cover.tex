@@ -20,10 +20,10 @@
 % and (re)define a command \MakeCoverBack to add the back cover to the document.
 
 % document metadata
-\title{Report Title}
-\subtitle{Optional Subtitle}
-\author{J. Random Author}
-\newcommand{\isbn}{978-90-8593-000-0}
+\title{Advanced Mechanics of Maritime Structures}
+\subtitle{MT44030 -- Assignment Report}
+\author{Student Name \& Student Name}
+\newcommand{\isbn}{MT44030}
 
 % set lengths used for the cover
 \setcoverbleed{1.5mm}
@@ -63,11 +63,11 @@
           \fi
         }
         \color{black}
-        \Huge J.\ Random Author
+        {\makeatletter\Huge\@author\makeatother}
         \vfill
         \large
-        \textbf{Cover text}\\[1ex]
-        Possibly spanning multiple lines
+        \textbf{Faculty of Mechanical Engineering}\\[1ex]
+        Department of Maritime and Transport Technology
 
         \isbn
       \end{minipage}}
@@ -139,11 +139,11 @@
             {\fontsize{30pt}{30pt}\selectfont\@subtitle\\[30pt]}
           \fi
         }
-        \Huge J.\ Random Author
+        {\makeatletter\Huge\@author\makeatother}
         \vfill
         \large
-        \textbf{Cover text}\\[1ex]
-        Possibly\\spanning multiple lines
+        \textbf{Faculty of Mechanical Engineering}\\[1ex]
+        Department of Maritime and Transport Technology
 
         \isbn
         

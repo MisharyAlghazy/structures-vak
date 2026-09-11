@@ -1,194 +1,47 @@
-\chapter{Introduction}
+% \addchap keeps this chapter unnumbered (in the TOC, but without a chapter
+% number), so that Chapter 1 below is Assignment 1, Chapter 2 is Assignment 2,
+% etc. -- matching the assignment brief's own numbering, e.g. Section 2.4 in
+% this report is Question 2.4 in the assignment.
+\addchap{Assignment Overview}
+\label{ch:introduction}
 
-This document is intended to be both an example of the TU Delft \LaTeX{} template for reports which can be used for both BSc and MSc theses, as well as a short introduction to its use. It is not intended to be a general introduction to \LaTeX{} itself,\footnote{We recommend \url{http://en.wikibooks.org/wiki/LaTeX} as a reference and a starting point for new users.} and we will assume the reader to be familiar with the basics of creating and compiling documents.
+This report presents the answers to the MT44030 \emph{Advanced Mechanics of Maritime Structures} assignment (2026 edition). The chapters of this report follow the structure of the assignment brief directly: \textbf{Part~1} (Chapters~\ref{ch:assignment1}--\ref{ch:assignment3}) contains Assignments~1--3, and \textbf{Part~2} (Chapters~\ref{ch:assignment4}--\ref{ch:assignment7}) contains Assignments~4--7. Each chapter number matches the assignment number, so that, e.g., \S2.4 in this report corresponds directly to Question~2.4 of the assignment brief.
 
-Instructions on how to use this template under Windows, Linux and MacOS, and which \LaTeX{} packages are required, can be found in \texttt{README.txt}.
+\section{Course objectives}
 
-
-\section{Document Structure}
-
-Since a report, and especially a thesis, might be a substantial document, it is convenient to break it up into smaller pieces. In this template we therefore give every chapter its own file. The chapters (and appendices) are gathered together in \texttt{report.tex}, which is the master file describing the overall structure of the document. \texttt{report.tex} starts with the line
-\begin{verbatim}
-  \documentclass{tudelft-report}
-\end{verbatim}
-which loads the TU Delft report template. The template is based on the \LaTeX{} \texttt{scrbook} document class and stored in \texttt{tudelft-report.cls}. The document class accepts several comma-separated options. The default language is (UK) English, but this can be changed to Dutch (\emph{e.g.}, for bachelor theses) by specifying the \texttt{dutch} option:
-\begin{verbatim}
-  \documentclass[dutch]{tudelft-report}
-\end{verbatim}
-Furthermore, hyperlinks are shown in blue, which is convenient when reader the report on a computer, but can be expensive when printing and does not serve the purpose it has in a digital document. They can be turned black with the \texttt{print} option. This will also turn the chapter numbers grey instead of light blue.
-
-If the document becomes large, it is easy to miss warnings about the layout in the \LaTeX{} output. In order to locate problem areas, add the \texttt{draft} option to the \texttt{\textbackslash documentclass} line. This will display a vertical bar in the margins next to the paragraphs that require attention.
-
-This template has the option to generate a cover page by including the file \texttt{cover.tex}. See the next section for a detailed description.
-
-The contents of the report are included between the \texttt{\textbackslash{}begin\{document\}} and \texttt{\textbackslash{}end\{docu\-ment\}} commands, and split into four parts by
-\begin{enumerate}
-  \item \texttt{\textbackslash{}frontmatter}, which uses Roman numerals for the page numbers and is used for the title page and the table of contents;
-  \item \texttt{\textbackslash{}mainmatter}, which uses Arabic numerals for the page numbers and is the style for the chapters;
-  \item \texttt{\textbackslash{}appendix}, which uses letters for the chapter numbers, starting with `A'.
-  \item \texttt{\textbackslash{}backmatter}, which has no chapter numbers at all.
-\end{enumerate}
-The title page is defined in a separate file, \texttt{title.tex}. Additionally, it is possible to include a preface, containing, for example, the acknowledgements. An example can be found in \texttt{preface.tex}. The table of contents is generated automatically with the \texttt{\textbackslash{}tableofcontents} command. Chapters are included after \texttt{\textbackslash{}mainmatter} and appendices after \texttt{\textbackslash{}appendix}. For example, \texttt{\textbackslash include\{in\-troduction\}} includes \texttt{introduction.tex}.
-
-\subsection{Bibliography}
-
-Lists of references are handled by \texttt{biblatex}.
-The present document has the following preamble
-\begin{verbatim}
-\usepackage[style=apa]{biblatex}
-\addbibresource{report.bib}
-\end{verbatim}
-The first line tells us that the references will be formatted according 
-to the APA-standards.
-
-The second line points to a file that contains the references in a database-like format.
-Use one such line for every database that you want to use.
-
-The general way this works is as follows (using the present document as an example):
-\begin{verbatim}
-lualatex report
-biber report
-lualatex report
-lualatex report
-\end{verbatim}
-The first line typesets the document and gathers information for the lists of references; the second line will generate lists of references for all chapters, these will be read in during execution of the third and fourth lines.
-The repetition of \texttt{lualatex report} is needed to get all the page numbers in links and references right.
-Depending on the editor that you use much of this can be done by clicking on a suitable icon or by hitting suitably defined hot keys. On Overleaf, all of this is done when you press \texttt{ctrl+r} or \texttt{ctrl+enter}.
-
-The \texttt{biblatex} package has many options and can be tailored to almost every need; you can explore its documentation at \texttt{https://www.ctan.org/pkg/biblatex}
-
-To get numbered references just use
-\begin{verbatim}
-\usepackage{biblatex}
-\addbibresource{report.bib}
-\end{verbatim}
-That is, remove \texttt{style=apa}.
-
-To give some examples we cite an article: \textcite{Einstein1906},
-a book: \textcite{MR1039321}, another article: \textcite{MR3860876},
-and a book with more than one editor: \textcite{MR3204729}.
-
-
-\section{Cover and Title Page}
-
-This template will automatically generate a cover page if you include the file \texttt{cover.tex}.
-This file defines three commands:
-
-\texttt{\textbackslash{}MakeCoverFront} inserts just the front cover
-
-\texttt{\textbackslash{}MakeCoverFull} inserts the complete cover (front, back, and spine) with some `bleed', i.e., a slightly enlarged edge to allow for cutting of the page after printing.
-
-\texttt{\textbackslash{}MakeCoverBack} inserts just the back cover
-
-\texttt{cover.tex} can be adapted according to your liking; this process is relatively free-format, with some examples given in \texttt{cover.tex}.
-
-For a thesis it is desirable to have a title page within the document, containing information like the thesis committee members. To give you greater flexibility over the layout of this page, it is described in the file \texttt{title.tex}. Modify this file according to your needs. The example text is in English, but Dutch translations are provided in the comments. Note that for a thesis, the title page is subject to requirements which differ by faculty. Make sure to check these requirements before printing.
-
-
-\section{Chapters}
-
-Each chapter has its own file. For example, the \LaTeX{} source of this chapter can be found in \texttt{introduc\-tion.tex}. A chapter starts with the command
-\begin{verbatim}
-  \chapter{Chapter title}
-\end{verbatim}
-This starts a new page, prints the chapter number and title and adds a link in the table of contents. If the title is very long, it may be desirable to use a shorter version in the page headers and the table of contents. This can be achieved by specifying the short title in brackets:
-\begin{verbatim}
-  \chapter[Short title]{Very long title with many words 
-    which could not possibly fit on one line}
-\end{verbatim}
-
-Chapters are subdivided into sections, subsections, subsubsections, and, optionally, paragraphs and subparagraphs. All can have a title, but only sections and subsections are numbered:
-\section{\textbackslash section\{\ldots\}}
-\subsection{\textbackslash subsection\{\ldots\}}
-\subsubsection{\textbackslash subsubsection\{\ldots\}}
-\paragraph{\textbackslash paragraph\{\ldots\}}
-
-\section{Fonts and Colors}
-
-The main font in this template is Arial, with the main headers in Roboto Slab, according to the TU Delft corporate style.
-Alternatively, using the class option \texttt{\textbackslash{}documentclass[fourier]}, the serif font Utopia can be used (provided by the package \texttt{fourier}).
-In that latter case, Helvetica will be used in the main headers.
-
-The corporate colors of the TU Delft are \textcolor{tud Blue}{\textbf{blue}}, \textbf{black} and \textbf{white}, available, respectively, via \texttt{\textbackslash text\-color\{tud Blue\}\{...\}}, \texttt{\textbackslash textcolor\{black\}\linebreak[0]\{...\}} and \texttt{\textbackslash textcolor\{white\}\linebreak[0]\{...\}}.
-Apart from these three, the house style defines the following basic colors, that can be used via \texttt{\textbackslash text\-color\{tud \textit{colorname}\}\{...\}}, where \texttt{\textit{colorname}} is any of:
-
-\vspace{\topsep}\noindent
-\begin{minipage}{.32\textwidth}
-  \begin{itemize}
-    \itemsep 0pt
-    \parskip 0pt
-    \item \textcolor{tud DarkBlue}{\textbf{Dark blue}}
-    \item \textcolor{tud Turquoise}{\textbf{Turquoise}}
-    \item \textcolor{tud RoyalBlue}{\textbf{Royal blue}}
-    \item \textcolor{tud LightPurple}{\textbf{Light purple}}
-  \end{itemize}
-\end{minipage}
-\begin{minipage}{.32\textwidth}
-  \begin{itemize}
-    \itemsep 0pt
-    \parskip 0pt
-    \item \textcolor{tud Pink}{\textbf{Pink}}
-    \item \textcolor{tud Burgundy}{\textbf{Burgundy}}
-    \item \textcolor{tud Red}{\textbf{Red}}
-    \item \textcolor{tud Orange}{\textbf{Orange}}
-  \end{itemize}
-\end{minipage}
-\begin{minipage}{.32\textwidth}
-  \begin{itemize}
-    \itemsep 0pt
-    \parskip 0pt
-    \item \textcolor{tud Yellow}{\textbf{Yellow}}
-    \item \textcolor{tud Green}{\textbf{Green}}
-    \item \textcolor{tud ForestGreen}{\textbf{Forest green}}
-    \item \textcolor{tud DarkGrey}{\textbf{Dark grey}}
-  \end{itemize}
-\end{minipage}
-\vspace{\topsep}
-
-For shading of areas, specific reduced coverages of blue and dark grey may be used, but mind contrast and readability.
-These reduced coverages are:
-\begin{itemize} 
-    \itemsep 0pt
-    \parskip 0pt
-  \item \textcolor{tud Blue}{\textbf{Blue:}}
-    \tikz[baseline]{\node[fill=tud Blue!50, anchor=base] {50\,\%,};}%
-    \tikz[baseline]{\node[fill=tud Blue!10, anchor=base] {10\,\%};}
-  \item \textcolor{tud DarkGrey}{\textbf{Dark grey:}}
-    \tikz[baseline]{\node[fill=tud DarkGrey!60, anchor=base] {\textcolor{white}{60\,\%,}};}%
-    \tikz[baseline]{\node[fill=tud DarkGrey!40, anchor=base] {40\,\%,};}%
-    \tikz[baseline]{\node[fill=tud DarkGrey!15, anchor=base] {15\,\%};}
+\begin{itemize}
+  \item To model free warping torsion of beam-like structural members mathematically, and determine the stiffness, strength characteristics, and displacements for solid and hollow cross-sections.
+  \item To model constrained warping torsion of beam-like structural members mathematically, and calculate the induced shear and normal stresses for hollow cross-sections.
+  \item To establish the generalized beam torsion equation for hollow cross-sections.
+  \item To identify the torsion load-carrying members and their efficiency in marine structures at both local and global levels.
+  \item To calculate the torsion loading-induced response of marine structures for analysis and design purposes.
+  \item To familiarize with measurement and monitoring of the torsion loading-induced response of marine structures.
 \end{itemize}
 
-Furthermore, there are paler versions of these colors to be used for data visualisation only:
+\section{Vessel and idealised geometry}
 
-\vspace{\topsep}\noindent
-\begin{minipage}{.32\textwidth}
-  \begin{itemize}
-    \itemsep 0pt
-    \parskip 0pt
-    \item \textcolor{tud DarkBluePale}{\textbf{Dark blue}}
-    \item \textcolor{tud TurquoisePale}{\textbf{Turquoise}}
-    \item \textcolor{tud RoyalBluePale}{\textbf{Royal blue}}
-    \item \textcolor{tud LightPurplePale}{\textbf{Light purple}}
-  \end{itemize}
-\end{minipage}
-\begin{minipage}{.32\textwidth}
-  \begin{itemize}
-    \itemsep 0pt
-    \parskip 0pt
-    \item \textcolor{tud PinkPale}{\textbf{Pink}}
-    \item \textcolor{tud BurgundyPale}{\textbf{Burgundy}}
-    \item \textcolor{tud RedPale}{\textbf{Red}}
-    \item \textcolor{tud OrangePale}{\textbf{Orange}}
-  \end{itemize}
-\end{minipage}
-\begin{minipage}{.32\textwidth}
-  \begin{itemize}
-    \itemsep 0pt
-    \parskip 0pt
-    \item \textcolor{tud YellowPale}{\textbf{Yellow}}
-    \item \textcolor{tud GreenPale}{\textbf{Green}}
-    \item \textcolor{tud ForestGreenPale}{\textbf{Forest green}}
-    \item \textcolor{tud DarkGreyPale}{\textbf{Dark grey}}
-  \end{itemize}
-\end{minipage}
+To approximate the structural layout of a shortsea bulk carrier, the total layout is divided into five blocks of three cross-section types, as shown schematically in the assignment brief (Figures~1--2): section~A (aft, engine room, closed section), section~B (parallel midship, appearing three times, holds with open or closed hatch covers), and section~C (bow, closed section, similar shape to~A but with a reduced equivalent width to account for the tapered bow).
+
+\begin{itemize}
+  \item \textbf{Section A} contains the engine room of the vessel and is a closed section, approximated by a hollow triangle (Assignment~1).
+  \item \textbf{Section B} occurs three times in the vessel and comprises the holds. The holds are usually open but can be closed using hatch covers (Assignments~2--5).
+  \item \textbf{Section C} is the bow of the vessel; for this course it is assumed to be a closed section of similar shape to Section~A, with a smaller equivalent width (Assignment~5).
+\end{itemize}
+
+\section{General instructions}
+
+\begin{itemize}
+  \item Present all answers in simplified form (in Maple, use \texttt{simplify} and/or \texttt{evalf}) and, where necessary, rounded to 3 digits.
+  \item Present the final answer to each question clearly at the end of that question, especially where the answer is numerical.
+  \item The deliverable is a report answering the questions in the assignment brief. The page limit is 30 pages for the main report (front matter and appendices excluded).
+\end{itemize}
+
+\subsection{Deadlines and examination}
+
+\begin{itemize}
+  \item Part 1 -- Thursday 1 October 2026 (recommended; no mandatory submission, but highly recommended to receive feedback)
+  \item Part 2 -- Wednesday 21 October 2026 (final deadline, both parts)
+  \item Oral examinations -- Wednesday 28 and Thursday 29 October 2026
+  \item Penalty -- 0.1 point per day exceeded on the final deadline (7 days/week), to a maximum of 2 points
+  \item Consultation -- Fridays 15:00--16:00, room 34-B-3-270
+\end{itemize}

@@ -1,0 +1,61 @@
+\chapter{Combined Torsional Analysis}
+\label{ch:assignment5}
+
+\begingroup\itshape Assignment 5 --- 17 points\endgroup
+
+\bigskip
+For the generalised torsion equation use the parameters listed in Table~\ref{tab:torsion-constants}. Each section of the vessel has a length of 20~m. The vessel is subject to a uniform torsional load of 100~MNm. Use a Young's modulus of 205~GPa and a shear modulus of 79~GPa.
+
+\begin{table}[h]
+  \centering
+  \caption{Torsion and warping constants for vessel sections.}
+  \label{tab:torsion-constants}
+  \begin{tabular}{lcccccc}
+    \toprule
+     & A & B1 & B2 & BU & BUH & C \\
+    \midrule
+    $I_p$ [m$^4$] & 6.72 & 1.05 & 0.86 & $8.71\times10^{-4}$ & 7.83 & 6.05 \\
+    $I_w$ [m$^6$] & 4.45 & 23.6 & 25.7 & 22.6 & 2.71 & 4.00 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Generalised torsion equation and boundary conditions}
+
+Provide the generalized torsion equation and the necessary boundary conditions (both between adjacent sections and at the ends of the vessel) to solve it for the entire ship (composed of five sections). Explain the choice of boundary conditions.
+\begin{quote}
+\emph{Hint: assume zero twist rate at the intersections of the sections due to the bulkheads with large torsional stiffness.}
+\end{quote}
+\textbf{(5 pts)}
+
+\bigskip
+\textit{Answer.}
+
+\section{Twist deformation and rate over the ship length}
+
+Use the torsional characteristics of each of the 5 ship sections to calculate and plot the twist deformation and rate over the ship length under constant torsional moment for the situation with configuration B1 and B2 (many and few cells).
+\begin{quote}
+\emph{See the example file on Brightspace on how to obtain the solution of the general torsion equation using Maple.}
+\end{quote}
+\textbf{(7 pts)}
+
+\bigskip
+\textit{Answer.}
+
+\section{Open versus closed hatch covers}
+
+Compare the results of a vessel subject to constant torsional moment with all 3 hatch covers closed (BUH) and all open (BU) for configuration B. \textbf{(5 pts)}
+
+\begin{enumerate}[label=\alph*.]
+  \item Compare the plot of the rotation over the length, and discuss differences. \textbf{(2 pts)}
+
+  \textit{Answer.}
+
+  \item Compare the plot of the twist rate over the length, and discuss differences. \textbf{(2 pts)}
+
+  \textit{Answer.}
+
+  \item Compare the improvement with respect to the maximum twist rate. \textbf{(1 pt)}
+
+  \textit{Answer.}
+\end{enumerate}

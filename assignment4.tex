@@ -1,0 +1,99 @@
+\chapter{Idealised Section U --- Analytical vs.\ ANSYS}
+\label{ch:assignment4}
+
+\begingroup\itshape Assignment 4 --- 20 points\endgroup
+
+\bigskip
+Revisit idealised section BU without a hatch cover. Consider the U-shaped structure of Assignment~2.5--2.6 with breadth $A = 8a$, depth $B = 5a$, bottom thickness $t_{bp} = 6.5\,t_p$, and side-shell thickness $t_{sp} = 3.5\,t_p$.
+
+\section{Analytical model vs.\ ANSYS model}
+
+For section B, use the idealised U-shaped model (i.e., without decks and stringers) to answer the following questions. Match the parameters of the analytical model to the parameters found in the ANSYS script. Note the controls for warping constraints; the different plots can be extracted using General Postproc.
+
+\subsection{Free warping shear stress}
+
+Calculate and compare the analytical and numerical free warping shear stress components $\tau_{xy}$ and $\tau_{xz}$ through-thickness distribution in all structural members. Use $I_p$ obtained in Assignment~2.6. \textbf{(5 pts)}
+
+\begin{enumerate}[label=\roman*.]
+  \item Calculate the analytical free warping shear stress components $\tau_{xy}(y,z)$ and $\tau_{xz}(y,z)$ in all structural members. \textbf{(1 pt)}
+
+  \textit{Answer.}
+
+  \item Present a plot (screen capture from the UI) of the numerical (ANSYS) free warping shear stress components $\tau_{xy}$ and $\tau_{xz}$ in all structural members. Explicitly state which input and settings (mesh size, convergence, element type, etc.) you used in ANSYS and why. \textbf{(1 pt)}
+
+  \textit{Answer.}
+
+  \item Present both the analytical and numerical solution in a single plot per shear stress component for comparison. \textbf{(1 pt)}
+
+  \textit{Answer.}
+
+  \item Discuss (the differences in) the through-thickness distribution and maximum values between the analytical and numerical method. \textbf{(2 pts)}
+
+  \textit{Answer.}
+\end{enumerate}
+
+\subsection{Free warping displacement}
+
+Calculate and compare the analytical and numerical free warping displacement distribution $u(s)$. Use $\omega(s)$ obtained in Assignment~2.5. \textbf{(5 pts)}
+
+\begin{enumerate}[label=\roman*.]
+  \item Calculate the analytical free warping displacement distribution $u(s)$. \textbf{(1 pt)}
+
+  \textit{Answer.}
+
+  \item Present a plot of the numerical (ANSYS) free warping displacement distribution $u(s)$ in all structural members. Explicitly state which input and settings you used in ANSYS and why. \textbf{(1 pt)}
+
+  \textit{Answer.}
+
+  \item Present both the analytical and numerical solution in a single plot for comparison. \textbf{(1 pt)}
+
+  \textit{Answer.}
+
+  \item Discuss (the differences in) the $s$ distribution (i.e., the distribution over the sectorial coordinate $s$) and extreme values between the analytical and numerical method. \textbf{(2 pts)}
+
+  \textit{Answer.}
+\end{enumerate}
+
+\subsection{Constrained warping stress}
+
+Calculate and compare the analytical and numerical constrained warping stress distribution $\sigma_{xx}(s)$. Use $I_w$ obtained in Assignment~2.6. \textbf{(5 pts)}
+
+\begin{enumerate}[label=\roman*.]
+  \item Calculate the analytical constrained warping stress distribution $\sigma_{xx}(s)$. \textbf{(1 pt)}
+
+  \textit{Answer.}
+
+  \item Present a plot of the numerical (ANSYS) constrained warping stress distribution $\sigma_{xx}(s)$ in all structural members. Explicitly state which input and settings you used in ANSYS and why. \textbf{(1 pt)}
+
+  \textit{Answer.}
+
+  \item Present both the analytical and numerical solution in a single plot for comparison. \textbf{(1 pt)}
+
+  \textit{Answer.}
+
+  \item Discuss (the differences in) the $s$ distribution and extreme values between the analytical and numerical method. \textbf{(2 pts)}
+
+  \textit{Answer.}
+\end{enumerate}
+
+\subsection{Constrained warping shear stress}
+
+Calculate and compare the constrained warping shear stress distribution $\tau_{xy}(s)$ and $\tau_{xz}(s)$. Use $S_\omega(s)$ obtained in Assignment~2.5. \textbf{(5 pts)}
+
+\begin{enumerate}[label=\roman*.]
+  \item Calculate the analytical distributions of the constrained warping shear stress components $\tau_{xy}(s)$ and $\tau_{xz}(s)$. \textbf{(1 pt)}
+
+  \textit{Answer.}
+
+  \item Present a plot of the numerical (ANSYS) constrained warping shear stress components $\tau_{xy}$ and $\tau_{xz}$ in all structural members. Explicitly state which input and settings you used in ANSYS and why. \textbf{(1 pt)}
+
+  \textit{Answer.}
+
+  \item Present both the analytical and numerical solution in a single plot per shear stress component for comparison. \textbf{(1 pt)}
+
+  \textit{Answer.}
+
+  \item Discuss (the differences in) the through-thickness and $s$ distribution and maximum values between the analytical and numerical method. \textbf{(2 pts)}
+
+  \textit{Answer.}
+\end{enumerate}
