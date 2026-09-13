@@ -4,31 +4,96 @@
 \begingroup\itshape Assignment 1 --- 9 points\endgroup
 
 \bigskip
-This part of the assignment focuses on the aft of the vessel where the engine room is located (Section~A). In quartering waves, the vessel is subject to a torsional load. The shape of this closed section is approximated by a hollow triangle (see Figure~3 of the assignment brief), whose interior boundary is a scaled copy of the exterior boundary with scaling factor~$k$. To approximate the shear stresses resulting from a torsional moment applied to the section, the Prandtl stress function may be used; its contour is shown in Figure~4 of the assignment brief.
+Section~A (engine room) is approximated by a hollow section whose outer boundary consists of the straight top edge $z=a$ and a curved lower boundary that is tangent to the two dashed lines through the apex $(0,-2a)$ under the angle $\alpha$ (Figure~3 of the brief). The distance from the lowest point of the section to the apex is $c$. The interior boundary is a scaled copy (factor $k$, scaling about the origin) of the exterior boundary.
+
+\paragraph{Identification of the stress function.}
+The Prandtl stress function $\phi(y,z)$ must satisfy $\nabla^2\phi=-2G\theta'$ in the material and $\phi=0$ on the outer boundary, where $\theta'$ is the twist rate. A boundary consisting of a straight line plus a hyperbola with the dashed lines as asymptotes allows a product solution. With the top line $z-a=0$ and the hyperbola $(z+2a)^2-\tan^2\!\alpha\,y^2-c^2=0$ (vertex at $z=c-2a$, asymptotes through $(0,-2a)$ under the angle $\alpha$), the trial function
+\begin{equation}
+  \phi = C\,(a-z)\left[(z+2a)^2-\tan^2\!\alpha\;y^2-c^2\right]
+\end{equation}
+gives $\nabla^2\phi = C\left[(6-2\tan^2\!\alpha)\,z + 6a + 2a\tan^2\!\alpha\right]$, which is constant only for $\tan^2\!\alpha=3$, i.e.\ $\alpha=60^\circ$ (the equilateral-triangle case, to which the section reduces for $c\to0$). Then $\nabla^2\phi=12aC=-2G\theta'$, so
+\begin{equation}
+  \boxed{\;\phi(y,z)=\frac{G\theta'}{6a}\,(a-z)\left[(z+2a)^2-3y^2-c^2\right]\;}
+  \label{eq:phiA}
+\end{equation}
+This is exactly the function contoured in Figure~4 of the brief: with $a=c=1$ the top corners lie at $y=\pm\sqrt{(9a^2-c^2)/3}=\pm1.633a$, the lowest point at $z=c-2a=-a$, and the inner boundary drawn in Figure~4 (top at $z=0.8$, corners at $\pm1.31$) corresponds to $k=0.8$. The shear stresses follow from
+\begin{equation}
+  \tau_{xy}=\frac{\partial\phi}{\partial z}=\frac{G\theta'}{6a}\left(c^2+3y^2-3z^2-6az\right),\qquad
+  \tau_{xz}=-\frac{\partial\phi}{\partial y}=\frac{G\theta'}{a}\,(a-z)\,y .
+  \label{eq:tauA}
+\end{equation}
+Figure~\ref{fig:a1prandtl} reproduces the contour plot from \eqref{eq:phiA} (own calculation, plotted in the wall only) with the locations discussed below.
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=0.85\textwidth]{figures/a1_prandtl}
+  \caption{Contours of $\phi$ of the solid section \eqref{eq:phiA} in the wall of the hollow section ($c=a$, $k=0.8$). Marked: locations of maximum $|\tau_{xy}|$ and $|\tau_{xz}|$ (1.1) and the regions where the Prandtl approximation is least accurate (1.2).}
+  \label{fig:a1prandtl}
+\end{figure}
 
 \section{Location of maximum shear stress}
 
 Based on the displayed stress function, identify the location(s) of maximum shear stress $\tau_{xy}$ and $\tau_{xz}$. Include your reasoning. \textbf{(3 pts)}
 
 \bigskip
-\textit{Answer.}
+The shear stress vector is tangent to the contour lines of $\phi$ and its magnitude equals the gradient of $\phi$, i.e.\ it is largest where the contour lines are closest together. Two observations from Figure~4 of the brief (and Figure~\ref{fig:a1prandtl}):
+\begin{itemize}
+  \item At the \emph{middle of the top edge} $(0,a)$ all contour levels between $0.015$ and $0.210$ are squeezed into the thin top wall and the contours run horizontally there. The gradient is purely vertical, so $\tau_{xz}=-\partial\phi/\partial y=0$ and $\tau_{xy}=\partial\phi/\partial z$ is maximal. From \eqref{eq:tauA}: $\tau_{xy}(0,a)=-\dfrac{G\theta'}{6a}\left(9a^2-c^2\right)$, i.e.\ $|\tau_{xy}|_{max}=\tfrac{4}{3}G\theta' a$ for $c=a$ (the sign only expresses the direction along the edge).
+  \item On the \emph{inclined/curved side walls} the contours run steeply and are again dense (the wall is thinnest there when measured perpendicular to the wall, $\approx0.17a$ for $k=0.8$). The gradient is mainly horizontal, so $\tau_{xz}=-\partial\phi/\partial y$ is maximal there. On the outer boundary $\tau_{xz}=G\theta'(a-z)y/a$; along the hyperbola this is maximal slightly below the $y$-axis: $|\tau_{xz}|_{max}=1.04\,G\theta'a$ at $z\approx-0.22a$, $y\approx\pm0.85a$ (both sides, opposite sign because the flow circulates). At the side points $(\pm a,0)$ one finds $\tau_{xz}=\pm G\theta'a$ and $\tau_{xy}=\tfrac{2}{3}G\theta'a$.
+\end{itemize}
+The total shear stress $|\tau|$ is largest at the top centre ($1.333\,G\theta'a$, versus at most $1.268\,G\theta'a$ on the curved sides at $z\approx-0.28a$ and $0.667\,G\theta'a$ at the bottom point $(0,c-2a)$, where the contours are widely spaced). At the convex corners of the top edge the stress vanishes ($\tau_{xy}(\pm1.633a,a)=0$), as the contours show by moving away from the corners.
+
+\bigskip
+\noindent\textbf{Final answer.} $|\tau_{xy}|$ is maximal at the middle of the top plate, $(y,z)=(0,a)$, with $|\tau_{xy}|=(9a^2-c^2)G\theta'/(6a)=1.33\,G\theta'a$ ($c=a$); $|\tau_{xz}|$ is maximal on the two inclined side walls just below the $y$-axis ($z\approx-0.2a$, $y\approx\pm0.85a$), $|\tau_{xz}|\approx1.04\,G\theta'a$.
 
 \section{Inaccuracies of the Prandtl-based prediction}
 
 Considering the mismatch between the inner boundary and the innermost contour lines, which inaccuracies are present in the Prandtl-based shear stress prediction? Mark the regions with the highest inaccuracy on the figure. \textbf{(3 pts)}
 
 \bigskip
-\textit{Answer.}
+Function \eqref{eq:phiA} is the exact solution for the \emph{solid} section. For a hollow section the stress function must additionally be \emph{constant} along the inner (traction-free) boundary, $\phi=\phi_i$, with $\phi_i$ fixed by the compatibility (Bredt) condition $\oint\tau\,\mathrm{d}s=2G\theta'A_{inner}$. The solid-section $\phi$ does not have this property. Evaluating \eqref{eq:phiA} on the inner boundary for $c=a$, $k=0.8$ (in units $G\theta'a^2$): $\phi=0.228$ at the inner top centre $(0,0.8a)$, $0.180$ at the inner side points $(\pm0.8a,0)$, $0.132$ at the inner bottom $(0,-0.8a)$ and only $0.057$ at the inner top corners $(\pm1.31a,0.8a)$. Because the inner boundary is not a level curve, the following errors are present:
+\begin{enumerate}[label=(\roman*)]
+  \item Where a contour line crosses the inner boundary the predicted stress has a component \emph{normal} to the free inner surface, which violates the traction-free condition. This is worst where the contours cross at a large angle: at the \emph{inner top corners} and along the upper part of the inclined walls (all contour levels between $0.06$ and $0.21$ intersect the inner boundary there). These regions are marked with dashed circles in Figure~\ref{fig:a1prandtl}.
+  \item The predicted magnitude is wrong: in a thin closed wall the true shear flow $q=\tau t$ is (nearly) constant around the circumference and the stress is almost uniform across the thickness, whereas \eqref{eq:phiA} predicts a stress that varies strongly around the section (from $1.33\,G\theta'a$ at the top centre to $0.67\,G\theta'a$ at the bottom) and across the wall thickness (at the top wall from $1.33$ at the outside to $0.95\,G\theta'a$ at the inside). The mismatch at the top centre (innermost contour $0.210$ versus $0.228$ on the boundary) and at the bottom is small, so the error is small there.
+  \item Consequently the torque--twist relation is also approximate: the torque of the hollow section is estimated as the torque of the solid section minus that of the removed core, which is only exact when the inner boundary coincides with a contour line.
+\end{enumerate}
+
+\bigskip
+\noindent\textbf{Final answer.} The approximation violates the traction-free condition on the inner surface and cannot reproduce the constant shear flow of a closed thin wall; the inaccuracy is highest at the inner top corners and the adjacent upper parts of the inclined walls (dashed regions in Figure~\ref{fig:a1prandtl}), and lowest at the centre of the top wall and at the bottom.
 
 \section{Cross-sectional efficiency}
 
-Consider that the outer boundary defines a solid cross section with area $A_{solid}$ and torsional constant $I_{p,solid}$.
-
-Using $k$, express the areas $A_{inner}$ and $A_{hollow}$ in terms of $A_{solid}$, and the torsional constants $I_{p,inner}$ and $I_{p,hollow}$ in terms of $I_{p,solid}$. Obtain and plot the cross-sectional efficiency
-\[
-  \eta(k) = \frac{I_{p,hollow}/A_{hollow}}{I_{p,solid}/A_{solid}}.
-\]
-Discuss the balance between the cross-sectional efficiency and strength. \textbf{(3 pts)}
+Consider that the outer boundary defines a solid cross section with area $A_{solid}$ and torsional constant $I_{p,solid}$. Using $k$, express the areas $A_{inner}$ and $A_{hollow}$ in terms of $A_{solid}$, and the torsional constants $I_{p,inner}$ and $I_{p,hollow}$ in terms of $I_{p,solid}$. Obtain and plot the cross-sectional efficiency
+$\eta(k) = (I_{p,hollow}/A_{hollow})/(I_{p,solid}/A_{solid})$ and discuss the balance between the cross-sectional efficiency and strength. \textbf{(3 pts)}
 
 \bigskip
-\textit{Answer.}
+The inner boundary is a geometrically similar copy scaled by $k$. Area scales with length squared and the torsion constant (dimension length$^4$: $I_p=2\!\int\!\phi\,\mathrm{d}A/(G\theta')$ with $\phi\propto$ length$^2$) with length to the fourth power:
+\begin{equation}
+  A_{inner}=k^2A_{solid},\qquad A_{hollow}=A_{solid}-A_{inner}=(1-k^2)A_{solid},
+\end{equation}
+\begin{equation}
+  I_{p,inner}=k^4I_{p,solid},\qquad I_{p,hollow}\approx I_{p,solid}-I_{p,inner}=(1-k^4)\,I_{p,solid},
+\end{equation}
+the last step being the Prandtl approximation of Question~1.2 (removing the core removes the torque carried by the core). For completeness, integrating \eqref{eq:phiA} over the solid section (using $u=z+2a$, $|y|\le\sqrt{(u^2-c^2)/3}$, $c\le u\le3a$) gives
+\begin{align}
+  A_{solid}&=\frac{1}{\sqrt3}\left[3a\sqrt{9a^2-c^2}-c^2\ln\frac{3a+\sqrt{9a^2-c^2}}{c}\right] = 3.881\,a^2 \quad(c=a),\\
+  I_{p,solid}&=\frac{\sqrt3}{270a}\left[\left(162a^4-81a^2c^2-8c^4\right)\sqrt{9a^2-c^2}+45ac^4\ln\frac{3a+\sqrt{9a^2-c^2}}{c}\right]=1.833\,a^4\quad(c=a),
+\end{align}
+which for $c\to0$ correctly reduces to $I_p=\sqrt3 s^4/80$ of the equilateral triangle with side $s=2\sqrt3a$ (dimension check: $[a^4]$). The efficiency becomes
+\begin{equation}
+  \boxed{\;\eta(k)=\frac{I_{p,hollow}/A_{hollow}}{I_{p,solid}/A_{solid}}=\frac{1-k^4}{1-k^2}=\frac{(1-k^2)(1+k^2)}{1-k^2}=1+k^2\;}
+\end{equation}
+which is plotted in Figure~\ref{fig:a1eta} together with the relative stiffness/strength $1-k^4$ and the relative material $1-k^2$.
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=0.62\textwidth]{figures/a1_eta}
+  \caption{Cross-sectional efficiency $\eta(k)=1+k^2$ and the relative torsional stiffness, strength and area of the hollow section as function of the scaling factor $k$.}
+  \label{fig:a1eta}
+\end{figure}
+
+\paragraph{Discussion.}
+$\eta$ increases monotonically from 1 (solid) to 2 (infinitely thin wall): material near the outer boundary carries the largest shear stress (Question~1.1) and has the largest lever arm, so removing the core removes little torsional stiffness per unit of area. The absolute stiffness and the strength, however, decrease. Since $\tau_{max}$ occurs on the outer boundary and is the same function of $G\theta'$ for solid and hollow section, the torque that can be carried at a given allowable stress is $M_{t,hollow}=G\theta'I_{p,hollow}=(1-k^4)M_{t,solid}$: for $k=0.8$ the hollow section uses 36\% of the material and has 64\% more stiffness per unit area, but only 59\% of the strength and stiffness of the solid section. Beyond $k\approx0.9$ the gain in efficiency is marginal ($\eta\le2$) while strength and stiffness collapse as $1-k^4$; in addition a very thin wall becomes prone to shear buckling and the Prandtl approximation itself deteriorates (Question~1.2). The design optimum therefore lies at a moderate $k$ where the required strength/stiffness is still met with the least material.
+
+\bigskip
+\noindent\textbf{Final answer.} $A_{inner}=k^2A_{solid}$, $A_{hollow}=(1-k^2)A_{solid}$, $I_{p,inner}=k^4I_{p,solid}$, $I_{p,hollow}=(1-k^4)I_{p,solid}$, $\eta(k)=1+k^2$; strength and stiffness scale with $1-k^4$.

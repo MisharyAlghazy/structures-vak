@@ -4,11 +4,11 @@
 \begingroup\itshape Assignment 5 --- 17 points\endgroup
 
 \bigskip
-For the generalised torsion equation use the parameters listed in Table~\ref{tab:torsion-constants}. Each section of the vessel has a length of 20~m. The vessel is subject to a uniform torsional load of 100~MNm. Use a Young's modulus of 205~GPa and a shear modulus of 79~GPa.
+The ship is modelled as five prismatic sections of length $L=20$~m each (A, B, B, B, C; $x=0$ at the aft end, $x=100$~m at the bow), with the torsion and warping constants of Table~\ref{tab:torsion-constants} (Table~1 of the brief). The vessel is subject to a uniform torsional load of $M_t=100$~MNm, $E=205$~GPa, $G=79$~GPa.
 
-\begin{table}[h]
+\begin{table}[htb]
   \centering
-  \caption{Torsion and warping constants for vessel sections.}
+  \caption{Torsion and warping constants for the vessel sections (Table 1 of the brief).}
   \label{tab:torsion-constants}
   \begin{tabular}{lcccccc}
     \toprule
@@ -16,46 +16,100 @@ For the generalised torsion equation use the parameters listed in Table~\ref{tab
     \midrule
     $I_p$ [m$^4$] & 6.72 & 1.05 & 0.86 & $8.71\times10^{-4}$ & 7.83 & 6.05 \\
     $I_w$ [m$^6$] & 4.45 & 23.6 & 25.7 & 22.6 & 2.71 & 4.00 \\
+    $\lambda=\sqrt{GI_p/EI_w}$ [m$^{-1}$] & 0.763 & 0.131 & 0.114 & 0.0039 & 1.055 & 0.763 \\
+    $\lambda L$ [-] & 15.3 & 2.62 & 2.27 & 0.077 & 21.1 & 15.3 \\
+    $M_t/(GI_p)$ [mrad/m] & 0.188 & 1.206 & 1.472 & 1453 & 0.162 & 0.209 \\
     \bottomrule
   \end{tabular}
 \end{table}
 
 \section{Generalised torsion equation and boundary conditions}
 
-Provide the generalized torsion equation and the necessary boundary conditions (both between adjacent sections and at the ends of the vessel) to solve it for the entire ship (composed of five sections). Explain the choice of boundary conditions.
-\begin{quote}
-\emph{Hint: assume zero twist rate at the intersections of the sections due to the bulkheads with large torsional stiffness.}
-\end{quote}
-\textbf{(5 pts)}
+Provide the generalized torsion equation and the necessary boundary conditions (both between adjacent sections and at the ends of the vessel) to solve it for the entire ship (composed of five sections). Explain the choice of boundary conditions. \textbf{(5 pts)}
 
 \bigskip
-\textit{Answer.}
+\emph{Equation.} The torque in a thin-walled beam is the sum of the St.\,Venant (free warping) torque $GI_p\theta'$ and the warping torque $M_\omega=-EI_w\theta'''$ (the derivative of the bimoment $B_\omega=-EI_w\theta''$). Moment equilibrium of a beam slice with a distributed torque $m_t(x)$ gives the generalised torsion equation
+\begin{equation}
+  EI_w\,\theta''''-GI_p\,\theta''=m_t(x),\qquad\text{or, integrated once,}\qquad GI_p\,\theta'-EI_w\,\theta'''=M_t(x),
+  \label{eq:gte}
+\end{equation}
+where $M_t(x)$ is the internal torque. Here the torque is uniform, $M_t(x)=M_t=100$~MNm and $m_t=0$, so within each section $i$ (constant $I_{p,i}$, $I_{w,i}$) the general solution is
+\begin{equation}
+  \theta_i'(\xi)=\frac{M_t}{GI_{p,i}}+C_{1i}\cosh\lambda_i\xi+C_{2i}\sinh\lambda_i\xi,\qquad
+  \theta_i(\xi)=\frac{M_t}{GI_{p,i}}\xi+\frac{C_{1i}}{\lambda_i}\sinh\lambda_i\xi+\frac{C_{2i}}{\lambda_i}(\cosh\lambda_i\xi-1)+C_{3i},
+  \label{eq:gensol}
+\end{equation}
+with $\lambda_i=\sqrt{GI_{p,i}/(EI_{w,i})}$ and $\xi$ the local coordinate ($0\le\xi\le L$). Three constants per section, fifteen in total, require fifteen conditions.
+
+\emph{Boundary conditions.}
+\begin{itemize}
+  \item \emph{Ends of the vessel} ($x=0$ and $x=100$~m): the end sections are free, so no warping normal stresses can act there: bimoment $B_\omega=-EI_w\theta''=0$, i.e.\ $\theta''=0$ (free warping). The torque at the ends equals the applied $M_t$, which is already contained in \eqref{eq:gte}. Because a constant torque only fixes the rotation up to a rigid-body rotation, the reference $\theta(0)=0$ is added at the aft end (only relative rotations are physical). This gives 3 conditions ($\theta(0)=0$, $\theta''(0)=0$, $\theta''(100)=0$).
+  \item \emph{Interfaces between adjacent sections} ($x=20,40,60,80$~m): the rotation is continuous, $\theta_i(L)=\theta_{i+1}(0)$. Following the hint of the brief, the transverse bulkheads at these positions are assumed to have a very large torsional (in-plane) stiffness, so that they prevent the cross-section from warping: $\theta'=0$ on both sides of the bulkhead, $\theta_i'(L)=0$ and $\theta_{i+1}'(0)=0$. With a bulkhead of infinite in-plane stiffness the two sections are decoupled except for the continuity of $\theta$; the bulkhead supplies whatever bimoment jump is required (in reality a flexible bulkhead would transmit part of the bimoment, $\theta'$ and $EI_w\theta''$ would be continuous, and the sections would interact). This gives $4\times3=12$ conditions.
+\end{itemize}
+In total $3+12=15$ conditions for 15 constants. The choice ``$\theta'=0$ at the bulkheads'' is the fully constrained warping limit; the alternative limit (no bulkheads: continuity of $\theta,\theta',B_\omega,M_\omega$) would give a stiffer or softer response depending on the neighbouring sections. For the present layout the conditions decouple the sections, so each section can be solved in closed form:
+\begin{align}
+  \text{interior sections (}\theta'=0\text{ at both ends):}\quad &\theta'(\xi)=\frac{M_t}{GI_p}\left[1-\frac{\cosh\lambda(\xi-L/2)}{\cosh(\lambda L/2)}\right],\\
+  \text{aft section A (}\theta''(0)=0,\ \theta'(L)=0\text{):}\quad &\theta'(\xi)=\frac{M_t}{GI_p}\left[1-\frac{\cosh\lambda\xi}{\cosh\lambda L}\right],\qquad
+  \text{bow section C: mirror image.}
+\end{align}
+The rotation follows by integration with $\theta$ continuous at the bulkheads. Dimension check: $[\lambda]=\sqrt{\mathrm{Pa\,m^4/(Pa\,m^6)}}=\mathrm{m^{-1}}$, $[M_t/(GI_p)]=\mathrm{Nm/(Pa\,m^4)}=\mathrm{m^{-1}}$ (rad/m).
 
 \section{Twist deformation and rate over the ship length}
 
-Use the torsional characteristics of each of the 5 ship sections to calculate and plot the twist deformation and rate over the ship length under constant torsional moment for the situation with configuration B1 and B2 (many and few cells).
-\begin{quote}
-\emph{See the example file on Brightspace on how to obtain the solution of the general torsion equation using Maple.}
-\end{quote}
-\textbf{(7 pts)}
+Use the torsional characteristics of each of the five ship sections to calculate and plot the twist deformation and rate over the ship length under constant torsional moment for the situation with configuration B1 and B2 (many and few cells). \textbf{(7 pts)}
 
 \bigskip
-\textit{Answer.}
+The fifteen conditions were assembled into a linear system for the constants $C_{1i},C_{2i},C_{3i}$ and solved numerically (Python script in Appendix~\ref{ch:appendix}; the ODE residual $GI_p\theta'-EI_w\theta'''-M_t$ was verified to vanish in every section). The closed-form expressions above give identical results. Figure~\ref{fig:a5B1B2} shows $\theta(x)$ and $\theta'(x)$ for the ship with B1 and with B2 hold sections; Table~\ref{tab:a5res} lists the characteristic values.
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=\textwidth]{figures/a5_B1B2}
+  \caption{Rotation $\theta(x)$ and twist rate $\theta'(x)$ of the vessel (A, B, B, B, C) for hold configurations B1 and B2 under $M_t=100$~MNm; bulkheads at $x=20,40,60,80$~m ($\theta'=0$), free ends.}
+  \label{fig:a5B1B2}
+\end{figure}
+
+\begin{table}[htb]
+  \centering\small
+  \caption{Results of the combined torsional analysis ($M_t=100$~MNm); the twist rate at the free ends is $0.188$ (A) and $0.209$~mrad/m (C) in all cases.}
+  \label{tab:a5res}
+  \begin{tabular}{lcccc}
+    \toprule
+     & B1 & B2 & BU & BUH \\
+    \midrule
+    max.\ twist rate in the holds [mrad/m] & 0.599 & 0.615 & 1.079 & 0.162 \\
+    \quad position & mid-hold & mid-hold & mid-hold & whole hold \\
+    rotation at $x=20$~m [deg] & 0.20 & 0.20 & 0.20 & 0.20 \\
+    rotation at $x=40$~m [deg] & 0.67 & 0.68 & 1.03 & 0.37 \\
+    rotation at $x=60$~m [deg] & 1.14 & 1.16 & 1.85 & 0.54 \\
+    rotation at $x=80$~m [deg] & 1.61 & 1.64 & 2.67 & 0.71 \\
+    total rotation stern--bow [deg] & 1.84 & 1.86 & 2.90 & 0.93 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\emph{Discussion (B1 versus B2).} In the hold sections the twist rate is zero at the bulkheads and rises to its maximum at mid-hold; the value at mid-hold, $\theta'_{max}=\frac{M_t}{GI_p}\left[1-1/\cosh(\lambda L/2)\right]$, is $0.60$~mrad/m for B1 and $0.62$~mrad/m for B2. Although $I_p$ of B2 is 18\% lower than that of B1 (the free-warping twist rate $M_t/GI_p$ would be 22\% higher: $1.47$ versus $1.21$~mrad/m), the actual twist rate differs by only 3\%: with $\lambda L\approx2.3$--$2.6$ the hold sections are in the intermediate regime where the warping restraint of the bulkheads carries a large part of the torque, and B2 has the larger warping constant ($25.7$ versus $23.6$~m$^6$), which compensates most of its loss in St.\,Venant stiffness. The end sections A and C (closed, $\lambda L\approx15$) behave as pure St.\,Venant sections except within $\approx1/\lambda\approx1.3$~m of the bulkheads, with $\theta'=M_t/(GI_p)=0.19$--$0.21$~mrad/m. The total rotation over the ship length is $1.84^\circ$ (B1) and $1.86^\circ$ (B2), of which $1.4^\circ$ accumulates in the three holds. Order-of-magnitude check: $0.6$~mrad/m over 60~m of holds gives $\approx0.036$~rad $=2^\circ$ if the twist rate were uniform; the actual $1.4^\circ$ is lower because $\theta'$ vanishes at the bulkheads. The design with many cells (B2) is thus, for this loading, practically equivalent to B1 in global twist, while it is 41\% weaker in shear strength (Assignment~2.4c): the additional cells do not pay off in torsion.
 
 \section{Open versus closed hatch covers}
 
-Compare the results of a vessel subject to constant torsional moment with all 3 hatch covers closed (BUH) and all open (BU) for configuration B. \textbf{(5 pts)}
+Compare the results of a vessel subject to constant torsional moment with all three hatch covers closed (BUH) and all open (BU) for configuration B. \textbf{(5 pts)}
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=\textwidth]{figures/a5_BU_BUH}
+  \caption{Rotation and twist rate for the idealised hold section with open (BU) and closed (BUH) hatch covers, $M_t=100$~MNm.}
+  \label{fig:a5BUBUH}
+\end{figure}
 
 \begin{enumerate}[label=\alph*.]
   \item Compare the plot of the rotation over the length, and discuss differences. \textbf{(2 pts)}
 
-  \textit{Answer.}
+  Figure~\ref{fig:a5BUBUH}(left): with open hatches the rotation accumulates mainly in the three holds, $0.82^\circ$ per hold, giving $2.90^\circ$ bow-to-stern; with closed hatches each hold contributes only $0.17^\circ$ and the end sections A and C now dominate (0.20$^\circ$ each), total $0.93^\circ$, a factor 3.1 less. The rotation curve of BU is smooth and almost parabolic within each hold (warping-dominated behaviour, see b); that of BUH is practically linear within the holds with small boundary layers at the bulkheads (St.\,Venant-dominated). With closed hatches the hold sections are stiffer than the engine room and bow sections, so the global twist is governed by A and C.
 
   \item Compare the plot of the twist rate over the length, and discuss differences. \textbf{(2 pts)}
 
-  \textit{Answer.}
+  Figure~\ref{fig:a5BUBUH}(right): for the open section $\lambda L=0.077\ll1$, so the St.\,Venant term is negligible and \eqref{eq:gte} reduces to $-EI_w\theta'''\approx M_t$: the twist rate is a parabola, $\theta'(\xi)\approx\dfrac{M_t}{2EI_w}\xi(L-\xi)$, with the maximum $\dfrac{M_tL^2}{8EI_w}=\dfrac{10^8\cdot400}{8\cdot205\times10^9\cdot22.6}=1.08\times10^{-3}$~rad/m at mid-hold (exactly the computed $1.079$~mrad/m). The free-warping value $M_t/(GI_p)=1.45$~rad/m would be a thousand times larger: the open hold survives torsion only because the bulkheads restrain warping, and the torque is carried almost entirely by warping shear and bimoments. For the closed section $\lambda L=21\gg1$ and $\theta'=M_t/(GI_p)=0.162$~mrad/m throughout the hold except in boundary layers of thickness $1/\lambda\approx1$~m at the bulkheads, where it drops to zero; warping restraint plays no role in the twist rate (but produces local warping stresses in the boundary layers).
 
   \item Compare the improvement with respect to the maximum twist rate. \textbf{(1 pt)}
 
-  \textit{Answer.}
+  Within the holds the maximum twist rate decreases from $1.079$ to $0.162$~mrad/m, an improvement by a factor $\boxed{6.7}$ (an 85\% reduction). Over the whole ship the maximum twist rate with closed hatches is no longer in the holds but at the bow end (section C, $0.209$~mrad/m), so the improvement of the ship-wide maximum is a factor $1.079/0.209=5.2$. The ratio is far smaller than the stiffness ratio $I_{p,BUH}/I_{p,BU}\approx9000$ because the open hold is already heavily supported by warping restraint over the short 20~m between bulkheads; the benefit of closing the hatches would grow with the hold length ($\theta'_{max,BU}\propto L^2$).
 \end{enumerate}

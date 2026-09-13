@@ -2,46 +2,36 @@
 % number), so that Chapter 1 below is Assignment 1, Chapter 2 is Assignment 2,
 % etc. -- matching the assignment brief's own numbering, e.g. Section 2.4 in
 % this report is Question 2.4 in the assignment.
-\addchap{Assignment Overview}
+\addchap{Introduction and Assumptions}
 \label{ch:introduction}
 
-This report presents the answers to the MT44030 \emph{Advanced Mechanics of Maritime Structures} assignment (2026 edition). The chapters of this report follow the structure of the assignment brief directly: \textbf{Part~1} (Chapters~\ref{ch:assignment1}--\ref{ch:assignment3}) contains Assignments~1--3, and \textbf{Part~2} (Chapters~\ref{ch:assignment4}--\ref{ch:assignment7}) contains Assignments~4--7. Each chapter number matches the assignment number, so that, e.g., \S2.4 in this report corresponds directly to Question~2.4 of the assignment brief.
-
-\section{Course objectives}
-
-\begin{itemize}
-  \item To model free warping torsion of beam-like structural members mathematically, and determine the stiffness, strength characteristics, and displacements for solid and hollow cross-sections.
-  \item To model constrained warping torsion of beam-like structural members mathematically, and calculate the induced shear and normal stresses for hollow cross-sections.
-  \item To establish the generalized beam torsion equation for hollow cross-sections.
-  \item To identify the torsion load-carrying members and their efficiency in marine structures at both local and global levels.
-  \item To calculate the torsion loading-induced response of marine structures for analysis and design purposes.
-  \item To familiarize with measurement and monitoring of the torsion loading-induced response of marine structures.
-\end{itemize}
+This report presents the answers to the MT44030 \emph{Advanced Mechanics of Maritime Structures} assignment (2026 edition). The chapters follow the assignment brief directly: \textbf{Part~1} (Chapters~\ref{ch:assignment1}--\ref{ch:assignment3}) contains Assignments~1--3 and \textbf{Part~2} (Chapters~\ref{ch:assignment4}--\ref{ch:assignment7}) Assignments~4--7. Each chapter number equals the assignment number, so that \S2.4 of this report answers Question~2.4 of the brief. Every question is repeated in the text, followed by the derivation and a boxed or explicitly stated final answer. Results are given in terms of the characteristic dimensions of the brief ($a$, $t_p$, $b$) and the applied torque $M_t$; the calculation scripts are listed in Appendix~\ref{ch:appendix}.
 
 \section{Vessel and idealised geometry}
 
-To approximate the structural layout of a shortsea bulk carrier, the total layout is divided into five blocks of three cross-section types, as shown schematically in the assignment brief (Figures~1--2): section~A (aft, engine room, closed section), section~B (parallel midship, appearing three times, holds with open or closed hatch covers), and section~C (bow, closed section, similar shape to~A but with a reduced equivalent width to account for the tapered bow).
+The structural layout of a shortsea bulk carrier is divided into five blocks of three cross-section types (Figures~1--2 of the brief): section~A (aft, engine room, closed section approximated by a hollow triangle, Assignment~1), section~B (parallel midship, three times, holds with open or closed hatch covers, Assignments~2--5) and section~C (bow, closed section of similar shape to~A with a reduced equivalent width, Assignment~5). Each block is 20~m long (Assignment~5).
+
+\section{List of assumptions}
+\label{sec:assumptions}
+
+All assumptions made in this report are collected here; those that concern the reading of the drawings were checked against the reference values given in the brief.
+\begin{enumerate}[label=A\arabic*., leftmargin=*]
+  \item \textbf{Thin-walled theory.} All sections are treated as thin-walled ($t\ll$ plate widths): plates are represented by their mid-lines, corners are sharp, and the St.\,Venant torsion constant of open parts is $\frac13\sum Lt^3$; closed cells follow the Bredt--Batho relations. Material is linear elastic and isotropic.
+  \item \textbf{Section A.} The outer boundary is the line $z=a$ plus the hyperbola $(z+2a)^2-3y^2=c^2$ with asymptote angle $\alpha=60^\circ$; this is the only angle for which the product-type Prandtl function is exact, and it reproduces Figure~4 of the brief with $c=a$ and inner scaling $k=0.8$. For the hollow section the solid-section stress function is used as an approximation, as instructed.
+  \item \textbf{Designs B1/B2.} Thicknesses are read from the colour legends of Figures~5--6 (Table~\ref{tab:B1B2}); the centre girder has twice the depicted thickness ($4t_p$). The bilge is modelled with a sharp corner, which reproduces the given $I_{p,B1}=108.70\,a^3t_p$ and $M_{t,B1}=75.50\,a^2t_p\tau_{max}$ within 0.3\%; the bilge radius $r=0.5a$ would lower $I_p$ by about 2\%. The total material of B1 and B2 differs by 2\% (95 versus 97 $at_p$), consistent with ``the same amount of material''.
+  \item \textbf{Design BU/BUH.} The idealised hold section is a U-shaped channel ($A=8a$, $B=5a$, $t_{bp}=6.5t_p$, $t_{sp}=3.5t_p$) with the hatch cover ($t_{hp}=2.5t_p$) forming one closed cell when closed; girders and stringers are neglected as instructed.
+  \item \textbf{Configurations 1--3.} T-stiffeners: web $b/2\times t_p$, flange $b/4\times2t_p$ (top stiffeners of configurations 1 and 2); small T on the trapezoid crown: $b/4\times t_p$ web and flange (table in Figure~8). Trapezoids: crown $b/3$ ($t_p$), $45^\circ$ legs ($t_p/2$), base $5b/6$. The vertical web of configuration 3 is $t_p$. The box plating is $2t_p$: this value is not dimensioned in the figures and was inferred by reproducing the given configuration-3 results ($I_{p,3}$ within 1\%, $\tau_{max,3}$ within 2\%). Stiffeners are evenly spaced.
+  \item \textbf{Open parts under $b\gg t_p$.} In Assignment~3 the torque carried by open stiffeners is neglected in the shear flows (it is a fraction $\mathcal O((t_p/b)^2)$); it is quantified separately in Question~3.5c.
+  \item \textbf{Assignment 4.} The analytical/numerical comparison assumes a straight prismatic beam of length $L$ (from the ANSYS script), warping fully restrained at one end and free at the other for the constrained cases, and ends free to warp for the free cases. $E=205$~GPa and $G=79$~GPa of Assignment~5 are used where numbers are given. No ANSYS runs were performed for this draft; all numerical items are marked ``to be verified in ANSYS''.
+  \item \textbf{Assignment 5.} The ``uniform torsional load of 100~MNm'' is interpreted as a constant internal torque $M_t(x)=100$~MNm along the ship (as stated in Questions~5.2--5.3). Bulkheads at the section interfaces are infinitely stiff in their plane and prevent warping ($\theta'=0$, hint of the brief); the ends of the ship are free to warp ($\theta''=0$); $\theta(0)=0$ is the reference. Inertia effects are neglected.
+  \item \textbf{Assignment 6.} The paper was not available when this draft was written; the answers are based on torsion theory and must be checked against the authors' conclusions.
+  \item \textbf{Assignment 7.} Beam (thin-walled) theory holds at the instrumented sections; the rigid-body roll is removed from the inclinometer signals by referencing; gauge positions and sectorial coordinates are known from the drawings.
+\end{enumerate}
+
+\section{Course objectives and general instructions}
 
 \begin{itemize}
-  \item \textbf{Section A} contains the engine room of the vessel and is a closed section, approximated by a hollow triangle (Assignment~1).
-  \item \textbf{Section B} occurs three times in the vessel and comprises the holds. The holds are usually open but can be closed using hatch covers (Assignments~2--5).
-  \item \textbf{Section C} is the bow of the vessel; for this course it is assumed to be a closed section of similar shape to Section~A, with a smaller equivalent width (Assignment~5).
-\end{itemize}
-
-\section{General instructions}
-
-\begin{itemize}
-  \item Present all answers in simplified form (in Maple, use \texttt{simplify} and/or \texttt{evalf}) and, where necessary, rounded to 3 digits.
-  \item Present the final answer to each question clearly at the end of that question, especially where the answer is numerical.
-  \item The deliverable is a report answering the questions in the assignment brief. The page limit is 30 pages for the main report (front matter and appendices excluded).
-\end{itemize}
-
-\subsection{Deadlines and examination}
-
-\begin{itemize}
-  \item Part 1 -- Thursday 1 October 2026 (recommended; no mandatory submission, but highly recommended to receive feedback)
-  \item Part 2 -- Wednesday 21 October 2026 (final deadline, both parts)
-  \item Oral examinations -- Wednesday 28 and Thursday 29 October 2026
-  \item Penalty -- 0.1 point per day exceeded on the final deadline (7 days/week), to a maximum of 2 points
-  \item Consultation -- Fridays 15:00--16:00, room 34-B-3-270
+  \item Course objectives: modelling of free and constrained warping torsion of solid and hollow beam-like members (stiffness, strength, displacements, shear and normal stresses); the generalised beam torsion equation; identification of torsion load-carrying members and their efficiency at local and global level; calculation of the torsional response of marine structures; measurement and monitoring of the torsional response.
+  \item Answers are presented in simplified form and, where numerical, rounded to three significant digits at the end of each question. The page limit is 30 pages for the main report (front matter and appendices excluded).
+  \item Deadlines: Part~1 Thursday 1 October 2026 (recommended), Part~2 Wednesday 21 October 2026 (final, both parts); oral examinations 28--29 October 2026; consultation Fridays 15:00--16:00, room 34-B-3-270.
 \end{itemize}

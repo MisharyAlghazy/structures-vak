@@ -4,18 +4,18 @@
 \begingroup\itshape Assignment 6 --- 7 points\endgroup
 
 \bigskip
-Carefully read \textcite{SilvaCampillo2022} (Brightspace~$>$~Readings~$>$~Other references), and answer the following questions.
+\noindent\fbox{\parbox{0.97\textwidth}{\textbf{Status.} The paper \textcite{SilvaCampillo2022} (Brightspace~$>$~Readings~$>$~Other references) was not available to the author of this draft. The answers below are written from the torsion theory of Assignments~2--5 and from the general set-up of the study (3D FE cargo-hold model, variation of the torsion-box width and height, hatch-corner stresses, fatigue assessment). \textbf{They must be checked against the actual conclusions and the actual arguments of the authors before submission}, and the word limits (100 words) must be respected after editing.}}
 
 \section{Adapting the torsion box for a heavier storm}
 
 Given the conclusions drawn by the authors, how would you adapt the dimensions of the torsion box for a container ship that has a heavier 10-year return period storm and why? (max.\ 100 words, no calculations needed) \textbf{(3 pts)}
 
 \bigskip
-\textit{Answer.}
+\emph{Draft answer (to be aligned with the paper).} A heavier 10-year storm raises the wave-induced torsional moment and its long-term stress ranges at the hatch corners, the fatigue-critical details. The torsion box is the main closed cell of the open container section: its enclosed area sets the St.\,Venant stiffness ($I_p\propto4A^2/\oint\mathrm{d}s/t$) and its position at the top of the section governs the warping stiffness and the sectorial coordinate at the hatch corners. I would therefore enlarge the box cross-section -- primarily its height (and width) rather than its plate thickness -- to increase $I_p$ and $I_w$, lower the warping normal stress ($\sigma_{xx}=-E\omega\theta''$) and the hatch-corner stress ranges, and restore the required fatigue life, checking that the larger box does not shift the hot spot to its own connections.
 
 \section{Role of plate thickness}
 
 Why do the authors not vary plate thicknesses in the torsion box? What is the role of plate thickness in the structural response to torsion? (100 words) \textbf{(4 pts)}
 
 \bigskip
-\textit{Answer.}
+\emph{Draft answer (to be aligned with the paper).} In torsion the response is dominated by the geometry of the closed cell, not by its thickness: the stiffness of a closed cell scales with the square of the enclosed area and only linearly with $t$ ($I_p=4A^2/\oint\mathrm{d}s/t$), and the shear flow $q=M_t/2A$ is independent of $t$ altogether -- thickness only converts the flow into a stress, $\tau=q/t$. Warping stresses depend on the sectorial coordinates ($\omega$, $I_w$), i.e.\ on the box dimensions and position. Plate thickness is moreover fixed by other requirements (classification rules, local loads, buckling, weight, welding) and increasing it adds weight proportionally with little stiffness gain, so the dimensions are the effective design variables and the thickness is kept constant to isolate their effect.

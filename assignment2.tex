@@ -4,69 +4,220 @@
 \begingroup\itshape Assignment 2 --- 20 points\endgroup
 
 \bigskip
-For section~B two configurations are at hand (designs B1 and B2). This section is the parallel midship of the vessel and has tanks in the side shells and a double bottom. $M_t$ is applied counter clockwise through CT. Provided are two designs: (global) basic design B1 with characteristic dimensions $a$ and $t_p$ (Figure~5 of the assignment brief), and design B2, which includes an additional stringer and side girder (Figure~6). The amount of material is the same for both designs. Both designs are symmetrical, and the thickness of the centre girder is given for half a section, i.e., the actual centre girder has double the depicted thickness.
+Section~B is the parallel midship with wing tanks and a double bottom; the hold is open at the top. $M_t$ acts counter-clockwise (CCW) through the centre of twist CT. The half-section geometry read from Figures~5 and~6 of the brief is summarised in Table~\ref{tab:B1B2} (coordinate $y$ from the centre line, $z$ from the bottom plate). The centre girder is drawn with half its thickness, so its full thickness is $4t_p$ in both designs. All walls are modelled as thin plates along their mid-lines with sharp corners; the influence of the bilge radius $r=0.5a$ is discussed separately. As a check on the reading of the drawings the total amount of material (full section, $\sum L\,t$) is $95.0\,at_p$ for B1 and $97.0\,at_p$ for B2, i.e.\ equal within 2\%, as stated in the brief.
+
+\begin{table}[htb]
+  \centering\small
+  \caption{Plate thicknesses of the half section (Figures 5 and 6 of the brief).}
+  \label{tab:B1B2}
+  \begin{tabular}{llcc}
+    \toprule
+    element & extent & B1 & B2 \\
+    \midrule
+    centre girder (full thickness) & $y=0$, $0<z<a$ & $4t_p$ & $4t_p$ \\
+    side girder & $y=a$, $0<z<a$ & -- & $3t_p$ \\
+    bottom plate & $z=0$, $0<y<2.5a$ & $3t_p$ & $3t_p$ \\
+    bottom plate + bilge & $z=0$, $2.5a<y<4a$ and $y=4a$, $0<z<a$ & $2t_p$ & $2t_p$ \\
+    inner bottom & $z=a$, $0<y<4a$ & $2t_p$ & $3t_p$ \\
+    longitudinal bulkhead & $y=2.5a$, $0<z<5a$ & $2.5t_p$ & $t_p$ \\
+    side shell & $y=4a$, $a<z<5a$ & $2t_p$ & $2t_p$ \\
+    stringer & $z=3a$, $2.5a<y<4a$ & -- & $t_p$ \\
+    deck strip & $z=5a$, $2.5a<y<4a$ & $3t_p$ & $3t_p$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Each design consists of closed cells only (Figure~\ref{fig:b2flow}): B1 has 6 cells (two double-bottom cells and one wing tank per side), B2 has 10 cells (three double-bottom cells and two wing-tank cells per side). For a multi-cell section under pure torsion the Bredt--Batho relations are used: with a CCW cell shear flow $q_i$ in every cell $i$ and net wall flow $q_i-q_j$ in a wall shared by cells $i$ and $j$,
+\begin{equation}
+  \oint_i\frac{q}{t}\,\mathrm{d}s = 2A_i\,G\theta' \quad(\text{each cell } i),\qquad
+  M_t=\sum_i 2A_iq_i,\qquad I_p=\frac{M_t}{G\theta'}=\sum_i 2A_i\frac{q_i}{G\theta'} .
+  \label{eq:bredt}
+\end{equation}
+By symmetry the port cells carry the same (CCW) flows as the starboard cells, so the centre girder carries no net shear flow and only the starboard half needs to be solved.
 
 \section{Shear flow sketch for design B2}
 
 Sketch the shear flow (using arrows) for design B2. \textbf{(1 pt)}
 
 \bigskip
-\textit{Answer.}
+Figure~\ref{fig:b2flow} shows the net shear flow in every wall; all cell flows circulate CCW (the sense of $M_t$), so in the shared walls (girders, bulkhead below the inner bottom, inner bottom of the wing tank, stringer) only the difference of the neighbouring cell flows remains. The values in the figure are the result of Question~2.2.
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=0.9\textwidth]{figures/a2_b2_flow}
+  \caption{Design B2: shear flow direction and magnitude (net wall flow in units $M_t/a^2$) for a CCW torsional moment; cell numbering used in Question~2.2.}
+  \label{fig:b2flow}
+\end{figure}
 
 \section{Shear flow per cell for design B2}
 
 Calculate the shear flow per cell for design B2. Present all partial answers. \textbf{(2 pts)}
 
 \bigskip
-\textit{Answer.}
+\emph{Cell areas} (starboard half, Figure~\ref{fig:b2flow}): $A_1=a\cdot a=a^2$ (double bottom, $0<y<a$), $A_2=1.5a\cdot a=1.5a^2$, $A_3=1.5a^2$ (double bottom under the wing tank), $A_4=1.5a\cdot2a=3a^2$ (lower wing tank), $A_5=3a^2$ (upper wing tank).
+
+\emph{Cell equations}: for every cell the sum of $L/t$ over its own walls multiplies $q_i$, and shared walls contribute $-(L/t)\,q_j$. In units $a$ and $t_p$ ($L/t$ in $a/t_p$):
+\begin{align*}
+  \text{cell 1: } & \Big(\tfrac{1}{3}+\tfrac{1}{3}+\tfrac{1}{3}\Big)q_1-\tfrac{1}{3}q_2 = 2a^2G\theta' & &(\text{bottom},\ \text{inner bottom},\ \text{girder};\ \text{centre girder: } 0)\\
+  \text{cell 2: } & -\tfrac{1}{3}q_1+\Big(\tfrac{1.5}{3}+\tfrac{1.5}{3}+\tfrac{1}{3}+\tfrac{1}{1}\Big)q_2-\tfrac{1}{1}q_3 = 3a^2G\theta'\\
+  \text{cell 3: } & -\tfrac{1}{1}q_2+\Big(\tfrac{1.5}{2}+\tfrac{1}{2}+\tfrac{1.5}{3}+\tfrac{1}{1}\Big)q_3-\tfrac{1.5}{3}q_4 = 3a^2G\theta'\\
+  \text{cell 4: } & -\tfrac{1.5}{3}q_3+\Big(\tfrac{2}{1}+\tfrac{2}{2}+\tfrac{1.5}{1}+\tfrac{1.5}{3}\Big)q_4-\tfrac{1.5}{1}q_5 = 6a^2G\theta'\\
+  \text{cell 5: } & -\tfrac{1.5}{1}q_4+\Big(\tfrac{2}{1}+\tfrac{2}{2}+\tfrac{1.5}{3}+\tfrac{1.5}{1}\Big)q_5 = 6a^2G\theta'
+\end{align*}
+or in matrix form
+\begin{equation}
+  \frac{a}{t_p}\begin{bmatrix} 1 & -0.333 & 0 & 0 & 0\\ -0.333 & 2.333 & -1 & 0 & 0\\ 0 & -1 & 2.75 & -0.5 & 0\\ 0 & 0 & -0.5 & 5 & -1.5\\ 0&0&0&-1.5&5\end{bmatrix}
+  \begin{Bmatrix}q_1\\q_2\\q_3\\q_4\\q_5\end{Bmatrix}
+  = a^2G\theta'\begin{Bmatrix}2\\3\\3\\6\\6\end{Bmatrix}.
+\end{equation}
+\emph{Solution} (per unit $G\theta'$): $q_1=2.918$, $q_2=2.754$, $q_3=2.453$, $q_4=1.984$, $q_5=1.795$ (all $\times\,at_pG\theta'$). The torque of the full section is $M_t=2\sum_{i=1}^{5}2A_iq_i$ (factor 2 for both halves), giving
+\begin{equation}
+  I_{p,B2}=\frac{M_t}{G\theta'}=2\left[2\cdot1\cdot2.918+2\cdot1.5\cdot2.754+2\cdot1.5\cdot2.453+2\cdot3\cdot1.984+2\cdot3\cdot1.795\right]a^3t_p=88.26\,a^3t_p .
+\end{equation}
+Dividing by $I_p$ gives the cell flows per unit torque:
+\begin{equation}
+  \boxed{\;q_1=0.0331,\quad q_2=0.0312,\quad q_3=0.0278,\quad q_4=0.0225,\quad q_5=0.0203\quad[\,M_t/a^2\,]\;}
+\end{equation}
+The resulting net wall flows are listed in Table~\ref{tab:B2walls} and drawn in Figure~\ref{fig:b2flow}. Dimension check: $q=M_t/a^2$ has the unit N/m as required.
+
+\begin{table}[htb]
+  \centering\small
+  \caption{Design B2: net shear flow and shear stress per wall (starboard half; port mirrored).}
+  \label{tab:B2walls}
+  \begin{tabular}{llccc}
+    \toprule
+    wall & cells & $q$ [$M_t/a^2$] & $t$ & $\tau=q/t$ [$M_t/(a^2t_p)$] \\
+    \midrule
+    bottom $0<y<a$ & 1 & 0.0331 & $3t_p$ & 0.0110 \\
+    bottom $a<y<2.5a$ & 2 & 0.0312 & $3t_p$ & 0.0104 \\
+    bottom $2.5a<y<4a$, bilge, side $0<z<a$ & 3 & 0.0278 & $2t_p$ & 0.0139 \\
+    inner bottom $0<y<a$ & 1 & 0.0331 & $3t_p$ & 0.0110 \\
+    inner bottom $a<y<2.5a$ & 2 & 0.0312 & $3t_p$ & 0.0104 \\
+    inner bottom $2.5a<y<4a$ & 3--4 & 0.0053 & $3t_p$ & 0.0018 \\
+    side girder $y=a$ & 1--2 & 0.0019 & $3t_p$ & 0.0006 \\
+    bulkhead $0<z<a$ & 2--3 & 0.0034 & $t_p$ & 0.0034 \\
+    \textbf{bulkhead $a<z<3a$} & 4 & \textbf{0.0225} & $t_p$ & \textbf{0.0225} \\
+    bulkhead $3a<z<5a$ & 5 & 0.0203 & $t_p$ & 0.0203 \\
+    side shell $a<z<3a$ & 4 & 0.0225 & $2t_p$ & 0.0112 \\
+    side shell $3a<z<5a$ & 5 & 0.0203 & $2t_p$ & 0.0102 \\
+    stringer $z=3a$ & 4--5 & 0.0021 & $t_p$ & 0.0021 \\
+    deck strip $z=5a$ & 5 & 0.0203 & $3t_p$ & 0.0068 \\
+    centre girder & 1--1$'$ & 0 & $4t_p$ & 0 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \section{Maximum shear stress for design B2}
 
 Locate the position of maximum shear stress and its magnitude for design B2. \textbf{(2 pts)}
 
 \bigskip
-\textit{Answer.}
+The shear stress in each wall is $\tau=q/t$ with $q$ the net wall flow (Table~\ref{tab:B2walls}). The largest value occurs in the thinnest wall that carries an undivided cell flow: the longitudinal bulkhead of the lower wing tank, $y=\pm2.5a$, $a<z<3a$ ($t=t_p$, $q=q_4$):
+\begin{equation}
+  \boxed{\;\tau_{max,B2}=\frac{q_4}{t_p}=0.0225\,\frac{M_t}{a^2t_p}\;}\qquad\text{(both sides, opposite sign)}.
+\end{equation}
+The second highest value is the upper part of the same bulkhead ($0.0203$), followed by the outer bottom/bilge/lower side shell ($0.0139$). Order-of-magnitude check: a single closed cell of the whole envelope ($A\approx8a\cdot5a$, $t\approx2t_p$) would give $\tau\approx M_t/(2\cdot40a^2\cdot2t_p)=0.006\,M_t/(a^2t_p)$; the actual value is higher because the open hold prevents the envelope from acting as one cell and the torque is carried by the smaller wing-tank and double-bottom cells.
 
 \section{Torsional stiffness and strength}
 
 \begin{enumerate}[label=\alph*.]
   \item Explain the difference between strength and stiffness. \textbf{(1 pt)}
 
-  \textit{Answer.}
+  \emph{Stiffness} is the resistance against deformation: the torsional stiffness $GI_p$ relates the torque to the twist rate, $M_t=GI_p\theta'$, and depends only on geometry ($I_p$) and the shear modulus. \emph{Strength} is the maximum load that can be carried before a limit state (yielding, buckling, fatigue) is reached: the torsional strength $M_{t,max}=\tau_{max}W_t$ is governed by the allowable shear stress and by the torsional section modulus $W_t$ (here $W_t=M_t/\tau_{max}$), i.e.\ by the location and thickness of the most heavily loaded wall. A section can be stiff but weak (a thin wall in a large cell attracts a large shear flow) or the other way round.
 
-  \item Analytically calculate the torsional stiffness $I_{p,B2}(a,t_p)$ for design B2 and compare this with the value $I_{p,B1}(a,t_p) \approx 108.70\,a^3 t_p$ of design B1. Discuss the origin of possible differences. \textbf{(2 pts)}
+  \item Analytically calculate the torsional stiffness $I_{p,B2}(a,t_p)$ for design B2 and compare this with the value $I_{p,B1}(a,t_p)\approx108.70\,a^3t_p$ of design B1. Discuss the origin of possible differences. \textbf{(2 pts)}
 
-  \textit{Answer.}
+  From Question~2.2, $\boxed{I_{p,B2}=88.3\,a^3t_p}$, which is 19\% lower than $I_{p,B1}=108.7\,a^3t_p$. As a check of the method the same procedure was applied to B1 (cells: double bottom $0<y<2.5a$ with $A=2.5a^2$, double bottom $2.5a<y<4a$ with $A=1.5a^2$, wing tank $A=6a^2$; cell flows $2.424$, $2.551$, $2.869\,at_pG\theta'$), giving $I_{p,B1}=108.4\,a^3t_p$, within $0.3\%$ of the reference value (the reference value was evidently obtained with sharp corners as well; including the bilge radius $r=0.5a$ reduces both values by about 2\%: $106.2$ and $86.1\,a^3t_p$). The ratio $I_{p,B2}/I_{p,B1}=0.81$ agrees with the ratio $0.86/1.05=0.82$ of Table~1 of the brief.
 
-  \item Calculate the strength $M_{t,B2}(a,t_p,\tau_{max})$ for design B2 and compare this with the value $M_{t,B1}(a,t_p,\tau_{max}) \approx 75.50\,a^2 t_p \tau_{max}$ of design B1. Discuss the origin of possible differences. \textbf{(2 pts)}
+  \emph{Origin of the difference.} Torsional stiffness of closed cells scales with $4A_i^2/\oint\mathrm{d}s/t$: the large wing-tank cell(s) dominate ($A=6a^2$ in B1 versus $2\times3a^2$ in B2). In B2 the material was moved from the long walls of the wing tank (bulkhead $2.5t_p\to t_p$) to the double bottom (inner bottom $2t_p\to3t_p$, extra girder) and to a stringer. The thinner bulkhead increases $\oint\mathrm{d}s/t$ of the wing-tank cells and therefore reduces their stiffness strongly, whereas the added internal walls (girder, stringer) subdivide cells without adding enclosed area: internal walls only carry the \emph{difference} of neighbouring cell flows ($0.002$--$0.005\,M_t/a^2$, Table~\ref{tab:B2walls}) and contribute almost nothing. Subdividing the wing tank by the stringer therefore does not compensate the loss of the bulkhead thickness. In short: for torsion, material is used most efficiently in the outer walls of the largest cells, not in internal subdivisions.
 
-  \textit{Answer.}
+  \item Calculate the strength $M_{t,B2}(a,t_p,\tau_{max})$ for design B2 and compare this with the value $M_{t,B1}(a,t_p,\tau_{max})\approx75.50\,a^2t_p\tau_{max}$ of design B1. Discuss the origin of possible differences. \textbf{(2 pts)}
+
+  With $\tau_{max}=0.02248\,M_t/(a^2t_p)$ (Question~2.3), the torque at which the allowable stress $\tau_{max}$ is reached is
+  \begin{equation}
+    \boxed{\;M_{t,B2}=\frac{a^2t_p\tau_{max}}{0.02248}=44.5\,a^2t_p\tau_{max}\;}
+  \end{equation}
+  which is 41\% below $M_{t,B1}=75.5\,a^2t_p\tau_{max}$ (own B1 calculation: the critical wall is the side shell of the wing tank, $q=0.0265\,M_t/a^2$, $t=2t_p$, $\tau=0.0132$, hence $M_{t,B1}=75.6\,a^2t_p\tau_{max}$). The difference originates from the bulkhead of the wing tank: it carries practically the full wing-tank cell flow ($0.0225\,M_t/a^2$ in B2, comparable to $0.0265$ in B1 since the cell flows are set by the enclosed areas), but its thickness has been reduced from $2.5t_p$ to $t_p$, so its stress is 2.1 times higher than the governing stress of B1. The material that was added in the double bottom is in walls with low shear flows and does not raise the strength. Design B2 is therefore both less stiff and considerably weaker in torsion; its advantages must lie elsewhere (local bending of the double bottom, cargo-hold arrangement), not in torsion.
 \end{enumerate}
 
 \bigskip
-For Questions~\ref{ch:assignment2}.5--\ref{ch:assignment2}.7, neglect longitudinal girders and stringer decks and consider a U-shaped structure with breadth $A$, depth $B$, bottom thickness $t_{bp}$, and side-shell thickness $t_{sp}$ (design BU).
+For Questions~\ref{ch:assignment2}.5--\ref{ch:assignment2}.7, longitudinal girders and stringer decks are neglected and the section is idealised as a U-shaped (channel) structure with breadth $A$, depth $B$, bottom thickness $t_{bp}$ and side-shell thickness $t_{sp}$ (design BU). Coordinates: $y$ from the centre line, $z$ upward from the bottom plate; the section is symmetric about the $z$-axis, so the shear centre S (=~CT) lies on this axis, at a distance $e$ \emph{below} the bottom plate (outside the section, as for any channel).
 
 \section{Sectorial coordinate and sectorial area moment}
 
 Calculate and plot, for this U-shaped structure, the sectorial coordinate distribution $\omega(s)$ as well as the sectorial area moment $S_\omega(s)$ for design BU, in order to show the cross-sectional warping displacement and shear stress distribution. Sketch the distributions in the U-shaped section. \textbf{(3 pts)}
 
 \bigskip
-\textit{Answer.}
+\emph{Sectorial coordinate.} With pole S at $(0,-e)$ and sectorial origin at the bottom centre $(0,0)$, $\omega(s)=\int_0^s r_t\,\mathrm{d}s$ with $r_t$ the (signed, CCW positive) distance from the pole to the tangent. Along the bottom ($z=0$, tangent in $+y$ direction) $r_t=-e$; along the sides ($y=\pm A/2$, tangent in $+z$ direction) $r_t=\pm A/2$. Hence
+\begin{equation}
+  \omega_{bottom}(y)=-e\,y,\qquad \omega_{stb}(z)=\frac{A}{2}\,(z-e),\qquad \omega_{port}(z)=-\frac{A}{2}\,(z-e),
+  \label{eq:omegaU}
+\end{equation}
+which is antisymmetric in $y$, continuous at the corners ($\omega=\mp eA/2$) and has zero mean automatically ($\int\omega\,\mathrm{d}A=0$). The pole position follows from the requirement that S is the shear centre, $\int\omega\,y\,\mathrm{d}A=0$ (the condition $\int\omega z\,\mathrm{d}A=0$ is satisfied by antisymmetry):
+\begin{equation}
+  \int_{-A/2}^{A/2}(-ey)\,y\,t_{bp}\,\mathrm{d}y+2\int_0^B\frac{A}{2}(z-e)\frac{A}{2}\,t_{sp}\,\mathrm{d}z=0
+  \;\Rightarrow\;
+  \boxed{\;e=\frac{3B^2t_{sp}}{At_{bp}+6Bt_{sp}}\;}
+\end{equation}
+(the classical channel result). For $A=8a$, $B=5a$, $t_{sp}=3.5t_p$, $t_{bp}=6.5t_p$: $e=\dfrac{3\cdot25\cdot3.5}{8\cdot6.5+6\cdot5\cdot3.5}\,a=\dfrac{262.5}{157}a=1.672\,a$. The extreme values are $\omega=\pm eA/2=\mp6.69\,a^2$ at the bottom corners and $\omega=\pm(A/2)(B-e)=\pm13.31\,a^2$ at the top of the side shells; $\omega=0$ at the bottom centre and on the sides at $z=e$.
+
+\emph{Sectorial static moment.} $S_\omega(s)=\int_{s_0}^{s}\omega\,t\,\mathrm{d}s$, starting at a free edge (top of the port side, $s=0$, where $S_\omega=0$) and running down the port side, along the bottom and up the starboard side. With $z=B-s$ on the port side:
+\begin{align}
+  S_{\omega,port}(z)&=\int_z^{B}\left(-\frac{A}{2}\right)(z'-e)\,t_{sp}\,\mathrm{d}z' = \frac{At_{sp}}{2}\left[e(B-z)-\frac{B^2-z^2}{2}\right],\\
+  S_{\omega,bottom}(y)&=S_{\omega,port}(0)-\frac{e\,t_{bp}}{2}\left(y^2-\frac{A^2}{4}\right),\qquad S_{\omega,stb}(z)=S_{\omega,port}(z)\ \text{(symmetric)}.
+\end{align}
+Characteristic values: $S_{\omega,port}(e)=-\frac{At_{sp}}{4}(B-e)^2=-77.5\,a^3t_p$ (extremum, where $\omega=0$), $S_\omega(\text{corner})=\frac{At_{sp}}{2}\left(eB-\tfrac{B^2}{2}\right)=-58.0\,a^3t_p$, $S_\omega(\text{bottom centre})=-58.0+\frac{e\,t_{bp}}{2}\frac{A^2}{4}=+29.0\,a^3t_p$, and $S_\omega=0$ again at the starboard free edge (check: $\int\omega\,\mathrm{d}A=0$). Both distributions are plotted along $s$ and on the section in Figure~\ref{fig:omega}.
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=\textwidth]{figures/a2_omega}
+  \caption{Design BU ($A=8a$, $B=5a$, $t_{sp}=3.5t_p$, $t_{bp}=6.5t_p$): sectorial coordinate $\omega(s)$ (warping displacement $u=-\theta'\omega$) and sectorial static moment $S_\omega(s)$ (constrained-warping shear flow $\propto S_\omega$), and both sketched on the section.}
+  \label{fig:omega}
+\end{figure}
+
+\emph{Interpretation.} The free-warping displacement is $u(s)=-\theta'\omega(s)$: the tops of the side shells warp most (in opposite directions, $\mp13.3\,a^2\theta'$), the bottom corners warp the opposite way, and the bottom centre and the points $z=e$ on the sides do not warp. When warping is constrained, the normal stress is $\sigma_{xx}=-E\omega\theta''$ (largest at the top of the sides) and the accompanying shear flow is $q_\omega=-E\theta'''S_\omega$, largest on the side shells at $z=e=1.67a$ and, per unit thickness, much smaller in the thick bottom.
 
 \section{Torsion and warping constants of design BU}
 
-Calculate the torsion constant $I_p(A,B,t_{bp},t_{sp})$ and warping constant $I_w(A,B,t_{bp},t_{sp})$ for the simplified model of section BU. Present $I_w(a,t_p)$ using $A = 8a$, $B = 5a$, $t_{sp} = 3.5\,t_p$, and $t_{bp} = 6.5\,t_p$.
-\begin{quote}
-\emph{Hint: In Maple, use} \texttt{simplify(eval(Iw, [A = 8*a, B = 5*a, t[sp] = 3.5*t[p], t[bp] = 6.5*t[p]]))}.
-\end{quote}
-\textbf{(3 pts)}
+Calculate the torsion constant $I_p(A,B,t_{bp},t_{sp})$ and warping constant $I_w(A,B,t_{bp},t_{sp})$ for the simplified model of section BU. Present $I_w(a,t_p)$ using $A=8a$, $B=5a$, $t_{sp}=3.5t_p$ and $t_{bp}=6.5t_p$. \textbf{(3 pts)}
 
 \bigskip
-\textit{Answer.}
+For an open thin-walled section the St.\,Venant torsion constant is the sum over the flat parts,
+\begin{equation}
+  \boxed{\;I_p=\frac{1}{3}\sum L_it_i^3=\frac{1}{3}\left(A\,t_{bp}^3+2B\,t_{sp}^3\right)\;}
+  \qquad\Rightarrow\qquad I_p(a,t_p)=\frac{1}{3}\left(8\cdot6.5^3+10\cdot3.5^3\right)at_p^3=875.3\,at_p^3 .
+\end{equation}
+The warping constant is $I_w=\int\omega^2\,\mathrm{d}A$ with \eqref{eq:omegaU} and $e$ from Question~2.5:
+\begin{equation}
+  I_w=\int_{-A/2}^{A/2}e^2y^2t_{bp}\,\mathrm{d}y+2\int_0^B\frac{A^2}{4}(z-e)^2t_{sp}\,\mathrm{d}z
+  =\frac{e^2A^3t_{bp}}{12}+\frac{A^2t_{sp}}{6}\left[(B-e)^3+e^3\right],
+\end{equation}
+which after substitution of $e$ simplifies to the closed form
+\begin{equation}
+  \boxed{\;I_w=\frac{A^2B^3t_{sp}\left(2At_{bp}+3Bt_{sp}\right)}{12\left(At_{bp}+6Bt_{sp}\right)}\;}
+\end{equation}
+(the channel formula with web $A,t_{bp}$ and flanges $B,t_{sp}$). Substituting $A=8a$, $B=5a$, $t_{sp}=3.5t_p$, $t_{bp}=6.5t_p$:
+\begin{equation}
+  \boxed{\;I_w(a,t_p)=\frac{64\cdot125\cdot3.5\,(104+52.5)}{12\,(52+105)}\,a^5t_p=\frac{1\,095\,500}{471}\,a^5t_p=2.33\times10^{3}\,a^5t_p\;}
+\end{equation}
+Dimension check: $[I_p]=\mathrm{m}^4$, $[I_w]=\mathrm{m}^6$. Plausibility check against Table~1 of the brief: $I_{p,BU}=8.71\times10^{-4}$~m$^4$ and $I_{w,BU}=22.6$~m$^6$ are both reproduced within 3\% for $a=1.0$~m and $t_p=10$~mm ($875\cdot1\cdot10^{-6}=8.75\times10^{-4}$~m$^4$, $2326\cdot1\cdot0.01=23.3$~m$^6$), so the idealised model and these characteristic dimensions are consistent.
 
 \section{Effect of closing the hatch cover}
 
-For the simple geometry, consider the hatch cover both open (BU) and closed (BUH). What is the improvement in $I_p(a,t_p)$ when closing the hatch cover? The thickness of the hatch cover is $t_{hp} = 2.5\,t_p$. Assume Bredt's thin-walled theory for the calculation of the $I_p$ of the section with a closed hatch cover. \textbf{(4 pts)}
+For the simple geometry, consider the hatch cover both open (BU) and closed (BUH). What is the improvement in $I_p(a,t_p)$ when closing the hatch cover? The thickness of the hatch cover is $t_{hp}=2.5t_p$; Bredt's thin-walled theory is assumed for the closed section. \textbf{(4 pts)}
 
 \bigskip
-\textit{Answer.}
+With the hatch cover the section becomes one closed cell of area $A_{enc}=AB$ (mid-line dimensions) and Bredt's second formula gives
+\begin{equation}
+  I_{p,BUH}=\frac{4A_{enc}^2}{\oint\mathrm{d}s/t}=\frac{4A^2B^2}{\dfrac{A}{t_{bp}}+\dfrac{2B}{t_{sp}}+\dfrac{A}{t_{hp}}} .
+\end{equation}
+Substituting: $\oint\mathrm{d}s/t=\left(\dfrac{8}{6.5}+\dfrac{10}{3.5}+\dfrac{8}{2.5}\right)\dfrac{a}{t_p}=\left(1.231+2.857+3.200\right)\dfrac{a}{t_p}=7.288\,\dfrac{a}{t_p}$, $A_{enc}=40a^2$:
+\begin{equation}
+  \boxed{\;I_{p,BUH}=\frac{4\cdot1600}{7.288}\,a^3t_p=878.2\,a^3t_p\;}
+  \qquad\text{versus}\qquad I_{p,BU}=875.3\,at_p^3 .
+\end{equation}
+The improvement factor is
+\begin{equation}
+  \boxed{\;\frac{I_{p,BUH}}{I_{p,BU}}=\frac{878.2\,a^3t_p}{875.3\,at_p^3}=1.003\left(\frac{a}{t_p}\right)^2\approx\left(\frac{a}{t_p}\right)^2\;}
+\end{equation}
+i.e.\ closing the hatch cover raises the torsion constant by a factor of the order of $(a/t_p)^2$. For the characteristic dimensions found above ($a/t_p\approx100$) this is a factor of about $10^4$, consistent with Table~1 of the brief ($7.83/8.71\times10^{-4}=9\times10^{3}$). Physically, the open section resists torsion only through the through-thickness shear stress of each plate (stiffness $\propto t^3$), whereas the closed cell carries a constant shear flow around the large enclosed area (stiffness $\propto A_{enc}^2t$). Note that the thin hatch cover ($2.5t_p$) contributes 44\% of $\oint\mathrm{d}s/t$ and is therefore the limiting element of the closed cell; a thicker cover would raise $I_{p,BUH}$ further, while the actual structural connection of the cover to the coaming determines how much of this theoretical stiffness is realised in practice.

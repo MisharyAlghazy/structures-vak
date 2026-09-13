@@ -4,54 +4,108 @@
 \begingroup\itshape Assignment 4 --- 20 points\endgroup
 
 \bigskip
-Revisit idealised section BU without a hatch cover. Consider the U-shaped structure of Assignment~2.5--2.6 with breadth $A = 8a$, depth $B = 5a$, bottom thickness $t_{bp} = 6.5\,t_p$, and side-shell thickness $t_{sp} = 3.5\,t_p$.
+\noindent\fbox{\parbox{0.97\textwidth}{\textbf{Status of this chapter.} The analytical part of every sub-question is complete and given in closed form in terms of $M_t$, $a$, $t_p$, $E$, $G$ and the beam length $L$. The numerical (ANSYS) parts could not be run by the author of this draft: for those items the complete modelling procedure, the settings to be used and the expected outcome are described, and they are marked \textbf{[to be verified in ANSYS]}. No numerical results are reported as if they came from ANSYS. Once the ANSYS script from Brightspace has been run, the screen captures and the overlay plots (iii) must be inserted at the indicated places and the discussions (iv) confirmed.}}
+
+\bigskip
+The idealised section BU of Assignment~2.5--2.6 is used: $A=8a$, $B=5a$, $t_{bp}=6.5t_p$, $t_{sp}=3.5t_p$, without hatch cover. From Assignment~2:
+\begin{equation}
+  I_p=875.3\,at_p^3,\qquad I_w=2326\,a^5t_p,\qquad e=1.672a,\qquad
+  \omega(s)\ \text{and}\ S_\omega(s)\ \text{as in \eqref{eq:omegaU} and Figure~\ref{fig:omega}}.
+\end{equation}
+The beam-torsion solution that all four sub-questions refer to is the generalised torsion equation $GI_p\theta'-EI_w\theta'''=M_t$ with the decay parameter
+\begin{equation}
+  \lambda=\sqrt{\frac{GI_p}{EI_w}}=\sqrt{\frac{G}{E}\,\frac{875.3\,at_p^3}{2326\,a^5t_p}}=0.613\sqrt{\frac{G}{E}}\;\frac{t_p}{a^2}=0.381\,\frac{t_p}{a^2}\quad(E=205\ \mathrm{GPa},\ G=79\ \mathrm{GPa}).
+\end{equation}
+For a beam with warping fully restrained at $x=0$ (built-in end) and the torque $M_t$ applied at the free end $x=L$ (the configuration used below for the constrained cases; adapt if the ANSYS script uses other supports):
+\begin{equation}
+  \theta'(x)=\frac{M_t}{GI_p}\left[1-\frac{\cosh\lambda(L-x)}{\cosh\lambda L}\right],\quad
+  \theta''(x)=\frac{M_t\lambda}{GI_p}\frac{\sinh\lambda(L-x)}{\cosh\lambda L},\quad
+  \theta'''(x)=-\frac{M_t}{EI_w}\frac{\cosh\lambda(L-x)}{\cosh\lambda L}.
+  \label{eq:cantilever}
+\end{equation}
+Note that $\lambda$ is very small for this open section: for the dimensions implied by Table~1 of the brief ($a\approx1$~m, $t_p\approx10$~mm) $\lambda\approx0.004$~m$^{-1}$, so the warping restraint of a built-in end is felt over hundreds of metres. This has two consequences for the FE model: (i) ``free warping'' can only be obtained with supports that do not restrain warping (see below), and (ii) in the constrained case practically the whole torque is carried by warping shear ($\theta'\approx0$) unless $L\gg1/\lambda$.
 
 \section{Analytical model vs.\ ANSYS model}
 
-For section B, use the idealised U-shaped model (i.e., without decks and stringers) to answer the following questions. Match the parameters of the analytical model to the parameters found in the ANSYS script. Note the controls for warping constraints; the different plots can be extracted using General Postproc.
+\paragraph{Parameter matching.}
+Before comparing, the parameters of the analytical expressions must be set equal to those in the ANSYS script: the plate widths $A$, $B$ and thicknesses $t_{bp}$, $t_{sp}$ (i.e.\ $a$ and $t_p$), the beam length $L$, the material constants $E$, $\nu$ ($G=E/2(1+\nu)$) and the magnitude and way of application of $M_t$. All analytical results below are written such that these values can be substituted directly. \textbf{[to be verified in ANSYS: read $a$, $t_p$, $L$, $E$, $\nu$, $M_t$ from the script and fill in.]}
+
+\paragraph{Modelling approach in ANSYS (common to all sub-questions).} \textbf{[to be verified in ANSYS]}
+\begin{enumerate}[label=(\arabic*)]
+  \item \emph{Geometry}: mid-surface model of the U-section (bottom $A\times L$, two sides $B\times L$) with the $x$-axis along the beam. For the through-thickness distributions of (a) a solid model (SOLID186, 20-node brick, at least 4--6 elements through each plate thickness) is preferred; for (b)--(d), which are membrane quantities, a shell model (SHELL281, 8-node, with $t_{bp}$ and $t_{sp}$ as section thicknesses; through-thickness results via the top/mid/bottom layers) is sufficient and much cheaper. If the script prescribes an element type, use that and state it.
+  \item \emph{Mesh}: quadrilateral mapped mesh, at least 8--10 elements across each plate width ($A$, $B$) and an aspect ratio $\le3$ along $x$; refine at the junctions (corners) and at the restrained end. Perform a convergence check: halve the element size and accept the mesh when the maximum stress and the end rotation change by less than 2--3\%. Report both meshes.
+  \item \emph{Free-warping load case (a, b)}: the ends must be free to warp. Apply $M_t$ through a pilot node on the beam axis at each end coupled to the end section with a \emph{force-distributed} constraint (RBE3, ANSYS \texttt{CERIG} only couples rigidly and would restrain warping); apply $+M_t$ at one end and $-M_t$ at the other, and suppress only rigid-body motion (e.g.\ fix the three translations of the pilot node at $x=0$ and the two lateral translations at $x=L$). Evaluate the results at mid-length $x=L/2$, away from any local disturbance. Alternatively use the warping control of the script (``free'' setting).
+  \item \emph{Constrained-warping load case (c, d)}: fix all degrees of freedom of the nodes of the end section $x=0$ (built-in, warping fully restrained), apply $M_t$ at $x=L$ via RBE3 as above. Evaluate $\sigma_{xx}$ and the warping shear at the section adjacent to the restrained end (one element row away, to avoid the singular corner nodes).
+  \item \emph{Post-processing} (General Postproc): define paths (\texttt{PATH}, \texttt{PPATH}, \texttt{PDEF}, \texttt{PLPATH}) (i) through the thickness of the bottom plate and of one side shell at $x=L/2$ for SXY and SXZ (solid model) or list the top/bottom layer values (shell model); (ii) along the mid-line $s$ of the section for UX (warping), SX ($\sigma_{xx}$) and SXY/SXZ (membrane, use the MID layer for shells). Export the path results (\texttt{PRPATH}) to a text file for the overlay plots.
+\end{enumerate}
 
 \subsection{Free warping shear stress}
 
-Calculate and compare the analytical and numerical free warping shear stress components $\tau_{xy}$ and $\tau_{xz}$ through-thickness distribution in all structural members. Use $I_p$ obtained in Assignment~2.6. \textbf{(5 pts)}
+Calculate and compare the analytical and numerical free warping shear stress components $\tau_{xy}$ and $\tau_{xz}$ (through-thickness distribution) in all structural members. Use $I_p$ obtained in Assignment~2.6. \textbf{(5 pts)}
 
 \begin{enumerate}[label=\roman*.]
-  \item Calculate the analytical free warping shear stress components $\tau_{xy}(y,z)$ and $\tau_{xz}(y,z)$ in all structural members. \textbf{(1 pt)}
+  \item Analytical $\tau_{xy}(y,z)$ and $\tau_{xz}(y,z)$ in all structural members. \textbf{(1 pt)}
 
-  \textit{Answer.}
+  In St.\,Venant torsion of an open thin-walled section each plate behaves as a narrow rectangle: the shear stress is parallel to the plate (along the contour direction), varies linearly through the thickness with zero value on the mid-plane, and equals $G\theta't$ on the two faces (opposite sign), with $\theta'=M_t/(GI_p)$. With $n$ the through-thickness coordinate measured from the mid-plane:
+  \begin{align}
+    \text{bottom plate ($z$ across the thickness): }&\ \tau_{xy}(y,z)=2G\theta'\,n=\frac{2M_t}{I_p}\,z_n,\quad -\tfrac{t_{bp}}{2}\le z_n\le\tfrac{t_{bp}}{2},\qquad \tau_{xz}\approx0,\\
+    \text{side shells ($y$ across the thickness): }&\ \tau_{xz}(y,z)=\frac{2M_t}{I_p}\,y_n,\quad -\tfrac{t_{sp}}{2}\le y_n\le\tfrac{t_{sp}}{2},\qquad \tau_{xy}\approx0,
+  \end{align}
+  where $z_n$, $y_n$ are measured from the respective mid-planes and the stress is independent of the position along the plate (except within a distance of the order of $t$ from the plate ends and junctions, where the flow turns around). Maximum values on the plate surfaces:
+  \begin{equation}
+    \boxed{\;|\tau_{xy}|_{max}=\frac{M_tt_{bp}}{I_p}=\frac{6.5}{875.3}\frac{M_t}{at_p^2}=7.43\times10^{-3}\,\frac{M_t}{at_p^2},\qquad
+    |\tau_{xz}|_{max}=\frac{M_tt_{sp}}{I_p}=4.00\times10^{-3}\,\frac{M_t}{at_p^2}\;}
+  \end{equation}
+  (dimension: $[M_t/(at_p^2)]$ = N/m$^2$). The thick bottom plate carries the highest stress; the torque carried by each plate is $G\theta'\cdot\frac13Lt^3$, i.e.\ 84\% by the bottom and 8\% by each side. The distributions are plotted in Figure~\ref{fig:a4}(left).
 
-  \item Present a plot (screen capture from the UI) of the numerical (ANSYS) free warping shear stress components $\tau_{xy}$ and $\tau_{xz}$ in all structural members. Explicitly state which input and settings (mesh size, convergence, element type, etc.) you used in ANSYS and why. \textbf{(1 pt)}
+  \item ANSYS plot of $\tau_{xy}$ and $\tau_{xz}$ in all members, with input and settings. \textbf{(1 pt)} \textbf{[to be verified in ANSYS]}
 
-  \textit{Answer.}
+  Use the free-warping load case (3) with the solid model (1), mesh (2); plot SXY and SXZ (global system, $x$ along the beam) as contour plots at $x=L/2$ and as path plots through the thickness of the bottom plate (at $y=0$) and of a side shell (at $z=B/2$). State: element type, number of elements through the thickness, element size, constraint type at the ends, load magnitude and the convergence result. \emph{Insert screen captures here.}
 
-  \item Present both the analytical and numerical solution in a single plot per shear stress component for comparison. \textbf{(1 pt)}
+  \item Analytical and numerical solution in a single plot per component. \textbf{(1 pt)} \textbf{[to be verified in ANSYS]}
 
-  \textit{Answer.}
+  Plot the path results (through-thickness coordinate on the vertical axis, stress on the horizontal axis) together with the straight lines of item~i, one figure for $\tau_{xy}$ (bottom plate) and one for $\tau_{xz}$ (side shell); Figure~\ref{fig:a4}(left) is the analytical template to which the FE points are to be added.
 
-  \item Discuss (the differences in) the through-thickness distribution and maximum values between the analytical and numerical method. \textbf{(2 pts)}
+  \item Discussion of the through-thickness distribution and maximum values. \textbf{(2 pts)} \textbf{[expected outcome, to be confirmed with the ANSYS results]}
 
-  \textit{Answer.}
+  Expected: at mid-length and away from the junctions the FE stress is linear through the thickness with the surface value $M_tt/I_p$ within a few per cent, provided the ends are truly free to warp; the analytical solution is exact for an infinitely wide plate and neglects (1) the stress components perpendicular to the contour near the plate ends ($\tau_{xz}$ in the bottom plate close to the corners, $\tau_{xy}$ in the sides close to the free edges and corners), (2) the stress concentration at the re-entrant bottom/side corners, where the FE model shows a local increase, and (3) the slight reduction of the surface stress near the free edges of the side shells. If the FE maximum is systematically higher than the analytical value everywhere, warping is (partly) restrained by the supports and the warping shear (item~d) is superimposed; if it is lower, $I_p$ of the FE model is higher than the thin-wall value (junction material), which is a few per cent for these thickness ratios.
 \end{enumerate}
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=\textwidth]{figures/a4_analytical}
+  \caption{Analytical distributions for section BU: (left) free-warping shear stress through the thickness of bottom plate and side shell; (middle) constrained-warping normal stress $\sigma_{xx}(s)\propto\omega(s)$, which is also the shape of the free-warping displacement $u(s)$; (right) constrained-warping shear stress $\tau(s)=-E\theta'''S_\omega/t$. The numerical (ANSYS) results are to be overlaid on these plots.}
+  \label{fig:a4}
+\end{figure}
 
 \subsection{Free warping displacement}
 
 Calculate and compare the analytical and numerical free warping displacement distribution $u(s)$. Use $\omega(s)$ obtained in Assignment~2.5. \textbf{(5 pts)}
 
 \begin{enumerate}[label=\roman*.]
-  \item Calculate the analytical free warping displacement distribution $u(s)$. \textbf{(1 pt)}
+  \item Analytical $u(s)$. \textbf{(1 pt)}
 
-  \textit{Answer.}
+  The axial displacement of free warping is $u(s)=-\theta'\,\omega(s)$ with $\theta'=M_t/(GI_p)$ and $\omega$ from \eqref{eq:omegaU}:
+  \begin{equation}
+    \boxed{\;u_{bottom}(y)=\frac{M_t}{GI_p}\,e\,y,\qquad u_{stb}(z)=-\frac{M_t}{GI_p}\frac{A}{2}(z-e),\qquad u_{port}(z)=+\frac{M_t}{GI_p}\frac{A}{2}(z-e)\;}
+  \end{equation}
+  i.e.\ linear along each plate, antisymmetric about the centre line, zero at the bottom centre and at $z=e=1.67a$ on both sides, and extreme at the top of the side shells:
+  \begin{equation}
+    |u|_{max}=\frac{M_t}{GI_p}\frac{A}{2}(B-e)=\frac{13.31\,a^2}{875.3\,at_p^3}\frac{M_t}{G}=1.52\times10^{-2}\,\frac{M_ta}{Gt_p^3},
+  \end{equation}
+  and $|u|=6.69a^2M_t/(GI_p)$ at the bottom corners (opposite sign). The shape is that of Figure~\ref{fig:a4}(middle) (with sign reversed) and of the blue curve in Figure~\ref{fig:omega}. Dimension: $[M_ta/(Gt_p^3)]$ = m. (Sign convention: $u$ positive in $+x$; the sign depends on the sense of $M_t$ and of the sectorial coordinate, which must be matched to the ANSYS coordinate system.)
 
-  \item Present a plot of the numerical (ANSYS) free warping displacement distribution $u(s)$ in all structural members. Explicitly state which input and settings you used in ANSYS and why. \textbf{(1 pt)}
+  \item ANSYS plot of $u(s)$ in all members, with settings. \textbf{(1 pt)} \textbf{[to be verified in ANSYS]}
 
-  \textit{Answer.}
+  Free-warping load case; plot UX at the section $x=L/2$ along the mid-line path $s$ (subtract the rigid-body part: with the pilot node fixed at $x=0$ the axial rigid displacement is zero, otherwise subtract the mean UX of the section). Shell or solid model; state the settings as in (a)ii. \emph{Insert screen capture here.}
 
-  \item Present both the analytical and numerical solution in a single plot for comparison. \textbf{(1 pt)}
+  \item Overlay plot. \textbf{(1 pt)} \textbf{[to be verified in ANSYS]}
 
-  \textit{Answer.}
+  Plot UX along $s$ from the path export together with $u(s)$ of item~i.
 
-  \item Discuss (the differences in) the $s$ distribution (i.e., the distribution over the sectorial coordinate $s$) and extreme values between the analytical and numerical method. \textbf{(2 pts)}
+  \item Discussion of the $s$-distribution and extreme values. \textbf{(2 pts)} \textbf{[expected outcome, to be confirmed]}
 
-  \textit{Answer.}
+  Expected: the FE warping is linear along each plate and antisymmetric, with the zero crossing on the sides at $z\approx e$; deviations appear (1) if the supports restrain warping, in which case $u$ at $x=L/2$ is reduced by the factor $[1-\cosh(\lambda(L/2))/\cosh(\lambda L)]$-type terms that are close to 1 only when $L\gg1/\lambda$ -- for this section a partial restraint therefore reduces $u$ drastically; (2) the position of the shear centre in the FE model differs slightly from $e=1.67a$ because the corner regions and the finite thickness are not captured by the mid-line model, shifting the zero crossing; (3) near the free top edges the plate is slightly more flexible. The extreme values should agree within a few per cent for a well-converged mesh with truly free ends.
 \end{enumerate}
 
 \subsection{Constrained warping stress}
@@ -59,21 +113,28 @@ Calculate and compare the analytical and numerical free warping displacement dis
 Calculate and compare the analytical and numerical constrained warping stress distribution $\sigma_{xx}(s)$. Use $I_w$ obtained in Assignment~2.6. \textbf{(5 pts)}
 
 \begin{enumerate}[label=\roman*.]
-  \item Calculate the analytical constrained warping stress distribution $\sigma_{xx}(s)$. \textbf{(1 pt)}
+  \item Analytical $\sigma_{xx}(s)$. \textbf{(1 pt)}
 
-  \textit{Answer.}
+  With $u=-\theta'\omega$ the axial strain is $\varepsilon_{xx}=\partial u/\partial x=-\theta''\omega$ and
+  \begin{equation}
+    \sigma_{xx}(s,x)=-E\,\omega(s)\,\theta''(x)=-\frac{B_\omega(x)}{I_w}\,\omega(s),\qquad B_\omega=-EI_w\theta''\ \text{(bimoment)}.
+  \end{equation}
+  The $s$-distribution is therefore proportional to $\omega(s)$ (Figure~\ref{fig:a4}, middle): zero at the bottom centre and at $z=e$ on the sides, $\mp e A/2=\mp6.69a^2$ at the bottom corners and $\pm(A/2)(B-e)=\pm13.31a^2$ at the top of the sides (times $-E\theta''$). For the built-in cantilever \eqref{eq:cantilever} the bimoment is largest at the restrained end $x=0$, $B_\omega(0)=-M_t\tanh(\lambda L)/\lambda$, so that
+  \begin{equation}
+    \boxed{\;\sigma_{xx}(s,0)=-\frac{M_t\,\tanh(\lambda L)}{\lambda I_w}\,\omega(s),\qquad
+    |\sigma_{xx}|_{max}=\frac{13.31\,a^2M_t}{\lambda\,2326\,a^5t_p}\tanh(\lambda L)=\frac{5.72\times10^{-3}}{\lambda a^3t_p}M_t\tanh(\lambda L)\;}
+  \end{equation}
+  at the top of the side shells; with $\lambda=0.381\,t_p/a^2$ this is $|\sigma_{xx}|_{max}=1.50\times10^{-2}\,\tanh(\lambda L)\,M_t/(at_p^2)$. Since $\lambda L\ll1$ for realistic lengths ($\tanh\lambda L\approx\lambda L$), the result simplifies to $|\sigma_{xx}|_{max}\approx M_tL\,\omega_{max}/I_w=5.72\times10^{-3}M_tL/(a^3t_p)$: the bimoment then equals $M_tL$ (the full torque is transferred by warping over the length $L$), which is also the upper bound. Along the beam the stress decays as $\sinh\lambda(L-x)/\cosh\lambda L$, i.e.\ almost linearly to zero at the free end for $\lambda L\ll1$. Dimension: $[M_tL/(a^3t_p)]$ = N/m$^2$.
 
-  \item Present a plot of the numerical (ANSYS) constrained warping stress distribution $\sigma_{xx}(s)$ in all structural members. Explicitly state which input and settings you used in ANSYS and why. \textbf{(1 pt)}
+  \item ANSYS plot of $\sigma_{xx}(s)$ with settings. \textbf{(1 pt)} \textbf{[to be verified in ANSYS]}
 
-  \textit{Answer.}
+  Constrained load case (4); plot SX along the mid-line path $s$ at the first element row next to the built-in end (and, for the decay along $x$, at a few sections); shell MID layer or solid mid-plane. State settings and the used $L$. \emph{Insert screen capture here.}
 
-  \item Present both the analytical and numerical solution in a single plot for comparison. \textbf{(1 pt)}
+  \item Overlay plot. \textbf{(1 pt)} \textbf{[to be verified in ANSYS]} Path export of SX versus $s$ together with item~i evaluated at the same $x$.
 
-  \textit{Answer.}
+  \item Discussion. \textbf{(2 pts)} \textbf{[expected outcome, to be confirmed]}
 
-  \item Discuss (the differences in) the $s$ distribution and extreme values between the analytical and numerical method. \textbf{(2 pts)}
-
-  \textit{Answer.}
+  Expected: the FE distribution along $s$ is piecewise linear like $\omega(s)$ with the extreme values at the top of the side shells and sign changes at the bottom centre and near $z=e$; deviations: (1) directly at the built-in section the FE stress contains the singular corner/edge effect of the fixed support and a Poisson-restraint contribution ($\nu$), so the comparison must be made one or two element rows away; (2) the analytical bimoment uses the beam assumption of a rigid cross-section shape -- the FE model allows in-plane distortion of the U (the sides bend), which reduces the effective bimoment and thus $\sigma_{xx}$; (3) the shear-lag of the constrained-warping shear (item~d) makes the FE $\sigma_{xx}$ slightly non-linear along each plate. The zero-crossing position on the sides is a sensitive check of the shear-centre location.
 \end{enumerate}
 
 \subsection{Constrained warping shear stress}
@@ -81,19 +142,24 @@ Calculate and compare the analytical and numerical constrained warping stress di
 Calculate and compare the constrained warping shear stress distribution $\tau_{xy}(s)$ and $\tau_{xz}(s)$. Use $S_\omega(s)$ obtained in Assignment~2.5. \textbf{(5 pts)}
 
 \begin{enumerate}[label=\roman*.]
-  \item Calculate the analytical distributions of the constrained warping shear stress components $\tau_{xy}(s)$ and $\tau_{xz}(s)$. \textbf{(1 pt)}
+  \item Analytical $\tau_{xy}(s)$, $\tau_{xz}(s)$. \textbf{(1 pt)}
 
-  \textit{Answer.}
+  Equilibrium of a plate element in the $x$-direction with the varying $\sigma_{xx}$ gives the warping shear flow $q_\omega(s)=-E\theta'''S_\omega(s)$, uniform through the thickness (membrane), directed along the contour:
+  \begin{equation}
+    \tau_\omega(s,x)=-\frac{E\theta'''(x)}{t(s)}\,S_\omega(s)=\frac{M_\omega(x)}{I_w}\frac{S_\omega(s)}{t(s)},\qquad M_\omega=-EI_w\theta'''\ \text{(warping torque)} .
+  \end{equation}
+  In the bottom plate this is $\tau_{xy}$, in the side shells $\tau_{xz}$. At the built-in end of the cantilever the St.\,Venant part vanishes ($\theta'=0$) and the warping torque equals the full torque, $M_\omega(0)=M_t$, so with $S_\omega$ from Question~2.5:
+  \begin{equation}
+    \boxed{\;\tau_{xz}(z)\big|_{sides}=\frac{M_t}{I_wt_{sp}}\frac{At_{sp}}{2}\left[e(B-z)-\frac{B^2-z^2}{2}\right],\qquad
+    \tau_{xy}(y)\big|_{bottom}=\frac{M_t}{I_wt_{bp}}\left[S_\omega(0)-\frac{et_{bp}}{2}\Big(y^2-\frac{A^2}{4}\Big)\right]\;}
+  \end{equation}
+  with the characteristic values (Figure~\ref{fig:a4}, right): maximum on the side shells at $z=e=1.67a$, $|\tau_{xz}|_{max}=\dfrac{77.5\,a^3t_p}{3.5t_p\cdot2326\,a^5t_p}M_t=9.52\times10^{-3}\,\dfrac{M_t}{a^2t_p}$; at the corners $7.1\times10^{-3}$ (side) and $3.8\times10^{-3}$ (bottom); at the bottom centre $\tau_{xy}=\dfrac{29.0}{6.5\cdot2326}\dfrac{M_t}{a^2t_p}=1.92\times10^{-3}\,\dfrac{M_t}{a^2t_p}$ with opposite sign; zero at the free top edges. Along the beam it decays as $\cosh\lambda(L-x)/\cosh\lambda L$, i.e.\ remains almost constant for $\lambda L\ll1$. Check: $\oint\tau_\omega t\,r_t\,\mathrm{d}s=M_t$ by construction.
 
-  \item Present a plot of the numerical (ANSYS) constrained warping shear stress components $\tau_{xy}$ and $\tau_{xz}$ in all structural members. Explicitly state which input and settings you used in ANSYS and why. \textbf{(1 pt)}
+  \item ANSYS plot with settings. \textbf{(1 pt)} \textbf{[to be verified in ANSYS]} Constrained load case; SXY (bottom) and SXZ (sides) along the mid-line path $s$ at the MID layer (shells) or mid-plane (solids) next to the built-in end. \emph{Insert screen capture here.}
 
-  \textit{Answer.}
+  \item Overlay plot per component. \textbf{(1 pt)} \textbf{[to be verified in ANSYS]}
 
-  \item Present both the analytical and numerical solution in a single plot per shear stress component for comparison. \textbf{(1 pt)}
+  \item Discussion of through-thickness and $s$-distribution and maxima. \textbf{(2 pts)} \textbf{[expected outcome, to be confirmed]}
 
-  \textit{Answer.}
-
-  \item Discuss (the differences in) the through-thickness and $s$ distribution and maximum values between the analytical and numerical method. \textbf{(2 pts)}
-
-  \textit{Answer.}
+  Expected: the warping shear is uniform through the thickness (membrane) whereas the free-warping shear of (a) is antisymmetric through the thickness; in the FE model both are superimposed wherever $\theta'\ne0$, so the through-thickness plot next to the built-in end should be nearly uniform (only $\tau_\omega$) and further away a linear part grows on top of it. Along $s$ the FE result should follow $S_\omega/t$ (parabolic on each plate, extreme at $z\approx e$, zero at the free edges, opposite sign in the bottom); differences arise from cross-section distortion, the corner regions and Poisson effects at the support. An important quantitative observation is the ratio of the two shear stresses: $\tau_\omega/\tau_{free}=9.52\times10^{-3}/(7.43\times10^{-3}\,a/t_p)=1.28\,t_p/a\ll1$ -- the open section transfers the torque by warping shear at a stress that is two orders of magnitude lower than the St.\,Venant stress needed for the same torque, which is why restraining warping (bulkheads, closed cells) is so effective for open ship sections.
 \end{enumerate}
